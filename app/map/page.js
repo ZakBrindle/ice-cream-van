@@ -7,6 +7,8 @@ import styles from "../page.module.css";
 import Head from "next/head";
 import 'leaflet/dist/leaflet.css';
 import firebaseConfig from '../firebaseConfig.js';
+import firebaseConfig_local from '../firebaseConfig_local.js';
+
 import { doc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -28,7 +30,7 @@ export default function MapPage() {
   // ---------------------------------------
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
+      navigator.geolocation.getCurrentPosition(showPosition);
 
     } else {
       console.error("Geolocation is not supported by this browser.");
@@ -49,30 +51,30 @@ export default function MapPage() {
       // Handle the case where location data is not available.
     }
   }
-  function handleLocationError(error) {
-    console.error("Error getting location:", error); // Log the full error object
 
-    let message = "We couldn't determine your location";
 
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        console.log(message + ": User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.log(message + ":Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        console.log(message + ":The request to get user location timed out.");
-        break;
-      case error.UNKNOWN_ERROR:
-        console.log(message + ":An unknown error occurred.");
-        break;
+ 
+
+  if (typeof window !== 'undefined') {
+  // Code that uses window or other browser-specific APIs
+  const fetchUserLocation = () => { 
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;   
+
+          getLocation();
+        },
+        (error) => {
+          console.log('Error getting user location:', error);   
+
+        }
+      );
     }
+  };
 
-
-  }
-
-  getLocation();
+  fetchUserLocation();
+} 
   // END OF GET CURRENT LOCATION --------------
   // ------------------------------------------
 
