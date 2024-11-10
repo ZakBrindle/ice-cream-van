@@ -24,8 +24,6 @@ export default function MapPage() {
   let myLatitude = defaultLatitude;
   let myLongitude = defaultLongitude;
 
-  console.log(process.env); 
-console.log(firebaseConfig);
 
   // GET CURRENT LOCATION -------------------
   // ---------------------------------------

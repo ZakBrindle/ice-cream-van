@@ -26,8 +26,6 @@ export default function Home() {
   );
 }
 
-console.log(process.env); 
-console.log(firebaseConfig);
 
 function login() {
   // ... (Authentication logic)
