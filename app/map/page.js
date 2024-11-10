@@ -180,14 +180,10 @@ export default function MapPage() {
 
 
               if (user.userID === userID_testing) {
-                L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&origin=${myLatitude},${myLongitude}&destination=${user.latitude},${user.longitude}&travelmode=walking" target="_blank">
-  Directions
-</a>`); ;
+                L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&origin=${myLatitude},${myLongitude}&destination=${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
               }
               else {
-                L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&origin=${myLatitude},${myLongitude}&destination=${user.latitude},${user.longitude}&travelmode=walking" target="_blank">
-  Directions
-</a>`); ;
+                L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&origin=${myLatitude},${myLongitude}&destination=${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
               }
             }
           });
