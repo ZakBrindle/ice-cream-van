@@ -7,7 +7,6 @@ import styles from "../page.module.css";
 import Head from "next/head";
 import 'leaflet/dist/leaflet.css';
 import firebaseConfig from '../firebaseConfig.js';
-import firebaseConfig_local from '../firebaseConfig_local.js';
 
 import { doc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
