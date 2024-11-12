@@ -207,7 +207,7 @@ export default function MapPage() {
     // Add a 3-second delay before calling initMap
     const timer = setTimeout(() => {
       initMap(); 
-    }, 1000); // 3000 milliseconds = 3 seconds
+    }, 1300); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
    
