@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Script from "next/script";
 import styles from "./page.module.css";
+import Head from 'next/head';
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" />
  {/* Changed class name to styles.app */}
       <div className={styles.loginPage}> {/* Changed class name to styles.loginPage */}
-      <title>Ice Cream Van</title>
+      <Head>
+        <title>Ice Cream Van</title> 
+      </Head>
         <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} /> 
         <h2>Ice Cream Van</h2>
         <br />

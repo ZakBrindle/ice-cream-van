@@ -5,6 +5,7 @@
 import { useState, useEffect } from "react";
 import styles from "../page.module.css";
 import Head from "next/head";
+
 import 'leaflet/dist/leaflet.css';
 import firebaseConfig from '../firebaseConfig.js';
 
@@ -30,11 +31,9 @@ export default function MapPage() {
   // ---------------------------------------
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-      initMap();
+      navigator.geolocation.getCurrentPosition(showPosition);      
     } else {
       console.error("Geolocation is not supported by this browser.");
-      initMap();
     }
   }
 
@@ -203,6 +202,12 @@ export default function MapPage() {
 
     }
 
+    // Add a 3-second delay before calling initMap
+    const timer = setTimeout(() => {
+      initMap(); 
+    }, 3000); // 3000 milliseconds = 3 seconds
+
+    return () => clearTimeout(timer); // Clear the timer on component unmount
    
   }, []);
 
