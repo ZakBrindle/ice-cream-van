@@ -106,6 +106,8 @@ export default function MapPage() {
 
 
     async function initMap() {
+
+      console.log("CREATING MAP");
       const L = await import("leaflet"); // Dynamically import Leaflet
 
       const myIcon = L.icon({
@@ -125,7 +127,7 @@ export default function MapPage() {
 
 
 
-      const map = L.map("map").setView([myLatitude, myLongitude], 13);
+      const map = L.map("map").setView([position.coords.latitude, position.coords.longitude], 13);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
