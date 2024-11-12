@@ -127,7 +127,7 @@ export default function MapPage() {
 
 
 
-      const map = L.map("map").setView([position.coords.latitude, position.coords.longitude], 13);
+      const map = L.map("map").setView([myLatitude, myLongitude], 13);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -207,7 +207,7 @@ export default function MapPage() {
     // Add a 3-second delay before calling initMap
     const timer = setTimeout(() => {
       initMap(); 
-    }, 3000); // 3000 milliseconds = 3 seconds
+    }, 1000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
    
