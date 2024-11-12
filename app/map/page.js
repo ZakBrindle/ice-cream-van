@@ -291,7 +291,7 @@ export default function MapPage() {
     <span className={styles.loggedInAs}>Logged in as:</span>
   </div>
   <div> 
-    <span className={styles.userName}>User/Van Name</span>
+    <span className={styles.userName}></span>
     </div>
         </div>
 
