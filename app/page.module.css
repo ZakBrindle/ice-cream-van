@@ -111,6 +111,11 @@
   font-size: 1.2em; /* Slightly larger font size */   
 }
 
+.loggedInAs {
+  color: white; /* White text */
+  font-size: 0.8em; /* Slightly larger font size */   
+}
+
 .map {
   width: 100%;
   height: calc(100% - 50px); /* Reduced map height */

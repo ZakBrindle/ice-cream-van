@@ -286,8 +286,11 @@ export default function MapPage() {
             alt="Settings"
             className={styles.settingsIcon}
             onClick={toggleSettings}
-          />
-          <span className={styles.userName}>User/Van Name</span>
+          />  
+                  <div> {/* Add a wrapping div here */}
+    <span className={styles.loggedInAs}>Logged in as:</span>
+    <span className={styles.userName}>User/Van Name</span>
+  </div>
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
