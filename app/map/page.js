@@ -13,6 +13,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
+
 export default function MapPage() {
   const [isOwner, setIsOwner] = useState(true);
   const [isLocationOn, setIsLocationOn] = useState(false);
@@ -266,7 +267,7 @@ export default function MapPage() {
   return (
     <>
       <Head>
-
+    <title>Ice Cream Van</title>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
       </Head>
