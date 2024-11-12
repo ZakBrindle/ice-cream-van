@@ -30,9 +30,10 @@ export default function MapPage() {
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
-
+      initMap();
     } else {
       console.error("Geolocation is not supported by this browser.");
+      initMap();
     }
   }
 
@@ -201,7 +202,7 @@ export default function MapPage() {
 
     }
 
-    initMap();
+   
   }, []);
 
   const toggleSettings = () => {
