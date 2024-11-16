@@ -48,8 +48,7 @@ export default function MapPage() {
     if (myLatitude !== null && myLongitude !== null) {
       console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
 
-      // Assuming 'map' is accessible in this scope
-      map.setView([myLatitude, myLongitude], 13);
+      
     } else {
       console.error("Latitude or longitude is null.");
     }
@@ -105,15 +104,22 @@ export default function MapPage() {
 
 
 
-    // Hide loading screen after 3 seconds
+    // Hide loading screen after 3.8 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3800);
 
-    // Initialize map after 2 seconds 
-    const timer_short = setTimeout(() => {
+   // Initialize map after 2 seconds, but only if not already initialized
+  let mapInitialized = false; 
+  const timer_short = setTimeout(() => {
+    if (!mapInitialized) {
       initMap();
-    }, 3000);
+      mapInitialized = true;
+    }
+  }, 2000);
+
+ 
+
 
     return () => {
       clearTimeout(timer);
