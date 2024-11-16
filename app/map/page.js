@@ -18,7 +18,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 export default function MapPage() {
   const [isOwner, setIsOwner] = useState(true);
   const [isLocationOn, setIsLocationOn] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   let defaultLatitude = "53.74328616942579";
   let defaultLongitude = "-2.493528328604127";
@@ -101,9 +101,14 @@ export default function MapPage() {
     ];
     // // // //
 
+    // LOADING SCREEN /////
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
 
+    return () => clearTimeout(timer); // Clear timer on unmount
 
-
+    // END OF LOADING SCREEN /////
 
 
     async function initMap() {
@@ -206,8 +211,8 @@ export default function MapPage() {
     }
 
     // Add a 3-second delay before calling initMap
-
     initMap();
+
 
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
@@ -280,43 +285,59 @@ export default function MapPage() {
 
       </Head>
 
-      <div className={styles.app}>
-        <div className={styles.topBar}>
-          <img
-            src="./images/settings.png"
-            alt="Settings"
-            className={styles.settingsIcon}
-            onClick={toggleSettings}
-          />
 
-          <table style="border-collapse: collapse;">
-            <tr>
-              <td>
-                <span className={styles.loggedInAs}>Logged in as:</span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span className={styles.userName}></span>
-              </td>
-            </tr>
-          </table>
-
+      {/* Loading Screen */}
+      {isLoading && (
+        <div className={styles.loadingScreen}>
+          <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} /> 
+          <p>Finding ice cream trucks...</p>
         </div>
+      )}
 
-        <div id="settingsPanel" style={{ display: "none" }}>
-          <button onClick={logout}>Logout</button>
-          {isOwner && (
-            <div id="vanOwnerSettings">
-              <button onClick={toggleLocation}>
-                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-              </button>
-            </div>
-          )}
+
+
+
+      <div className={styles.app} style={{ display: isLoading ? 'none' : 'block' }}>
+        <div className={styles.app}>
+          <div className={styles.topBar}>
+            <img
+              src="./images/settings.png"
+              alt="Settings"
+              className={styles.settingsIcon}
+              onClick={toggleSettings}
+            />
+
+            <table style="border-collapse: collapse;">
+              <tr>
+                <td>
+                  <span className={styles.loggedInAs}>Logged in as:</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className={styles.userName}></span>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+
+          <div id="settingsPanel" style={{ display: "none" }}>
+            <button onClick={logout}>Logout</button>
+            {isOwner && (
+              <div id="vanOwnerSettings">
+                <button onClick={toggleLocation}>
+                  {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div id="map" className={styles.mapContainer}></div>
         </div>
-
-        <div id="map" className={styles.mapContainer}></div>
       </div>
+
+
     </>
   );
 }
