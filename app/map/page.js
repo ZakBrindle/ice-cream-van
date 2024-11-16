@@ -108,12 +108,12 @@ export default function MapPage() {
     // Hide loading screen after 3 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 3800);
 
     // Initialize map after 2 seconds 
     const timer_short = setTimeout(() => {
       initMap();
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);
