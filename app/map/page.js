@@ -105,11 +105,22 @@ export default function MapPage() {
 
 
 
+    // Hide loading screen after 3 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
-    return () => clearTimeout(timer);
+    // Initialize map after 2 seconds 
+    const timer_short = setTimeout(() => {
+      initMap();
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer_short);
+    };
+
+
 
 
 
@@ -212,7 +223,7 @@ export default function MapPage() {
 
     }
 
-    initMap();
+
 
 
   }, []);
@@ -287,7 +298,7 @@ export default function MapPage() {
       {/* Loading Screen */}
       {isLoading && (
         <div className={styles.loadingScreen}>
-           <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} /> 
+          <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} />
           <p>Searching for ice cream trucks...</p>
         </div>
       )}
