@@ -310,7 +310,7 @@ export default function MapPage() {
       )}
 
 
-      <div className={styles.app} style={{ display: isLoading ? 'none' : 'block' }}>
+  
         <div className={styles.app}>
           <div className={styles.topBar}>
             <img
@@ -338,7 +338,7 @@ export default function MapPage() {
 
           <div id="map" className={styles.mapContainer}></div>
         </div>
-      </div>
+    
     </>
   );
 }

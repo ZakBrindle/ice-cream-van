@@ -14,7 +14,7 @@
 @media (min-width: 768px) { 
   #app {
       border: 10px solid #ccc;
-      border-radius: 40px;
+      border-radius: 20px;
       width: 400px; 
       height: 800px; 
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
@@ -167,15 +167,27 @@
 
 
 .loadingScreen {
-  position: fixed; /* Stay in place even if the page scrolls */
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 95vw; /* Match the width of your .app container */
+  max-width: 400px; /* Match the max-width of your .app container */
+  height: 100%; 
   background-color: #80B8AB;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 100; /* Ensure it's on top of other elements */
+  z-index: 1000000; 
+  margin: 20px auto; /* Add the same margin as your .app container */
+}
+
+@media (min-width: 768px) { 
+  .loadingScreen {
+    border: 10px solid #ccc; /* Add the same border as your .app container */
+    border-radius: 20px; /* Add the same border-radius as your .app container */
+    width: 400px;  /* Match the width of your .app container */
+    height: 800px; /* Match the height of your .app container */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add the same box-shadow */
+  }
 }
