@@ -22,8 +22,12 @@ export default function MapPage() {
   const [isLocationOn, setIsLocationOn] = useState(false);
 
 
-  let defaultLatitude = "53.74328616942579";
-  let defaultLongitude = "-2.493528328604127";
+  let defaultLatitude = " 53.765284407793764";
+  let defaultLongitude = "-2.708824723749953";
+
+  let blackburndefaultLatitude = "53.74328616942579";
+  let blackburndefaultLongitude = "-2.493528328604127";
+
 
   let myLatitude = defaultLatitude;
   let myLongitude = defaultLongitude;
