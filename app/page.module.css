@@ -1,9 +1,9 @@
-.app { /* Changed from #app to .app */
+.app { 
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 95vw;
-  max-width: 400px;
+  max-width: 420px;
   background-color: #80B8AB; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 20px auto; /* Added margin for spacing */
@@ -13,8 +13,8 @@
 /* PC "phone emulator" look */
 @media (min-width: 768px) { 
   #app {
-      border: 10px solid #ccc;
-      border-radius: 40px;
+      border: 1px solid #353535;
+      border-radius: 0px;
       width: 400px; 
       height: 800px; 
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
