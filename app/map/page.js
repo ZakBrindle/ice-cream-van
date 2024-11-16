@@ -16,6 +16,8 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 
 export default function MapPage() {
+
+  const [isLoading, setIsLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(true);
   const [isLocationOn, setIsLocationOn] = useState(false);
 
@@ -103,6 +105,11 @@ export default function MapPage() {
 
 
 
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
 
 
 
@@ -276,32 +283,44 @@ export default function MapPage() {
 
       </Head>
 
-      <div className={styles.app}>
-        <div className={styles.topBar}>
-          <img
-            src="./images/settings.png"
-            alt="Settings"
-            className={styles.settingsIcon}
-            onClick={toggleSettings}
-          />
-          <div className={styles.loginDetailsContainer}>
-            <div className={styles.loggedInAs}>Logged in as:</div>
-            <div className={styles.userName}></div>
-          </div>
-        </div>
 
-        <div id="settingsPanel" style={{ display: "none" }}>
-          <button onClick={logout}>Logout</button>
-          {isOwner && (
-            <div id="vanOwnerSettings">
-              <button onClick={toggleLocation}>
-                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-              </button>
+      {/* Loading Screen */}
+      {isLoading && (
+        <div className={styles.loadingScreen}>
+           <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} /> 
+          <p>Searching for ice cream trucks...</p>
+        </div>
+      )}
+
+
+      <div className={styles.app} style={{ display: isLoading ? 'none' : 'block' }}>
+        <div className={styles.app}>
+          <div className={styles.topBar}>
+            <img
+              src="./images/settings.png"
+              alt="Settings"
+              className={styles.settingsIcon}
+              onClick={toggleSettings}
+            />
+            <div className={styles.loginDetailsContainer}>
+              <div className={styles.loggedInAs}>Logged in as:</div>
+              <div className={styles.userName}></div>
             </div>
-          )}
-        </div>
+          </div>
 
-        <div id="map" className={styles.mapContainer}></div>
+          <div id="settingsPanel" style={{ display: "none" }}>
+            <button onClick={logout}>Logout</button>
+            {isOwner && (
+              <div id="vanOwnerSettings">
+                <button onClick={toggleLocation}>
+                  {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div id="map" className={styles.mapContainer}></div>
+        </div>
       </div>
     </>
   );

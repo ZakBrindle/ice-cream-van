@@ -163,3 +163,19 @@
   display: flex;
   flex-direction: column; /* Stack elements vertically */
 }
+
+
+
+.loadingScreen {
+  position: fixed; /* Stay in place even if the page scrolls */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #80B8AB;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Ensure it's on top of other elements */
+}
