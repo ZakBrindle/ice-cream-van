@@ -244,7 +244,7 @@ export default function MapPage() {
       settingsPanel.style.display === "none" ? "block" : "none";
   };
 
-  const userID_testing = 4;  // Replace with actual logged-in user ID later   // FORCE LOG IN AS SUGAR RUSH EXPRESS
+  const userID_testing = 1;  // Replace with actual logged-in user ID later   // FORCE LOG IN AS SUGAR RUSH EXPRESS
 
   const toggleLocation = async () => {
     try {
