@@ -18,7 +18,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 export default function MapPage() {
   const [isOwner, setIsOwner] = useState(true);
   const [isLocationOn, setIsLocationOn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+
 
   let defaultLatitude = "53.74328616942579";
   let defaultLongitude = "-2.493528328604127";
@@ -31,7 +31,7 @@ export default function MapPage() {
   // ---------------------------------------
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
+      navigator.geolocation.getCurrentPosition(showPosition);      
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
@@ -39,43 +39,43 @@ export default function MapPage() {
 
 
 
-  function showPosition(position) {
-    myLatitude = position.coords.latitude;
-    myLongitude = position.coords.longitude;
+function showPosition(position) {
+  myLatitude = position.coords.latitude;
+  myLongitude = position.coords.longitude;
 
-    if (myLatitude !== null && myLongitude !== null) {
-      console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
-
-      // Assuming 'map' is accessible in this scope
-      map.setView([myLatitude, myLongitude], 13);
-    } else {
-      console.error("Latitude or longitude is null.");
-    }
+  if (myLatitude !== null && myLongitude !== null) {
+    console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
+    
+    // Assuming 'map' is accessible in this scope
+    map.setView([myLatitude, myLongitude], 13); 
+  } else {
+    console.error("Latitude or longitude is null."); 
   }
+}
 
 
-
+ 
 
   if (typeof window !== 'undefined') {
-    // Code that uses window or other browser-specific APIs
-    const fetchUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
+  // Code that uses window or other browser-specific APIs
+  const fetchUserLocation = () => { 
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;   
 
-            getLocation();
-          },
-          (error) => {
-            console.log('Error getting user location:', error);
+          getLocation();
+        },
+        (error) => {
+          console.log('Error getting user location:', error);   
 
-          }
-        );
-      }
-    };
+        }
+      );
+    }
+  };
 
-    fetchUserLocation();
-  }
+  fetchUserLocation();
+} 
   // END OF GET CURRENT LOCATION --------------
   // ------------------------------------------
 
@@ -101,14 +101,9 @@ export default function MapPage() {
     ];
     // // // //
 
-    // LOADING SCREEN /////
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
 
-    return () => clearTimeout(timer); // Clear timer on unmount
 
-    // END OF LOADING SCREEN /////
+
 
 
     async function initMap() {
@@ -211,12 +206,12 @@ export default function MapPage() {
     }
 
     // Add a 3-second delay before calling initMap
-    initMap();
-
-
+    const timer = setTimeout(() => {
+      initMap(); 
+    }, 1300); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
-
+   
   }, []);
 
   const toggleSettings = () => {
@@ -280,64 +275,40 @@ export default function MapPage() {
   return (
     <>
       <Head>
-        <title>Ice Cream Van</title>
+    <title>Ice Cream Van</title>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
       </Head>
 
-
-      {/* Loading Screen */}
-      {isLoading && (
-        <div className={styles.loadingScreen}>
-          <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} /> 
-          <p>Finding ice cream trucks...</p>
+      <div className={styles.app}>
+        <div className={styles.topBar}>
+          <img
+            src="./images/settings.png"
+            alt="Settings"
+            className={styles.settingsIcon}
+            onClick={toggleSettings}
+          />  
+                  <div> {/* Add a wrapping div here */}
+    <span className={styles.loggedInAs}>Logged in as:</span>
+  </div>
+  <div> 
+    <span className={styles.userName}></span>
+    </div>
         </div>
-      )}
 
-
-
-
-      <div className={styles.app} style={{ display: isLoading ? 'none' : 'block' }}>
-        <div className={styles.app}>
-          <div className={styles.topBar}>
-            <img
-              src="./images/settings.png"
-              alt="Settings"
-              className={styles.settingsIcon}
-              onClick={toggleSettings}
-            />
-
-            <table style="border-collapse: collapse;">
-              <tr>
-                <td>
-                  <span className={styles.loggedInAs}>Logged in as:</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className={styles.userName}></span>
-                </td>
-              </tr>
-            </table>
-
-          </div>
-
-          <div id="settingsPanel" style={{ display: "none" }}>
-            <button onClick={logout}>Logout</button>
-            {isOwner && (
-              <div id="vanOwnerSettings">
-                <button onClick={toggleLocation}>
-                  {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div id="map" className={styles.mapContainer}></div>
+        <div id="settingsPanel" style={{ display: "none" }}>
+          <button onClick={logout}>Logout</button>
+          {isOwner && (
+            <div id="vanOwnerSettings">
+              <button onClick={toggleLocation}>
+                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+              </button>
+            </div>
+          )}
         </div>
+
+        <div id="map" className={styles.mapContainer}></div>
       </div>
-
-
     </>
   );
 }
