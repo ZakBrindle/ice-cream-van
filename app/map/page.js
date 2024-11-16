@@ -104,19 +104,19 @@ export default function MapPage() {
 
 
 
-    // Hide loading screen after 3.8 seconds
+    // Hide loading screen after X seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3800);
+    }, 3300);
 
-   // Initialize map after 2 seconds, but only if not already initialized
+   // Initialize map after X seconds, but only if not already initialized
   let mapInitialized = false; 
   const timer_short = setTimeout(() => {
     if (!mapInitialized) {
       initMap();
       mapInitialized = true;
     }
-  }, 2000);
+  }, 3000);
 
  
 
