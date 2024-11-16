@@ -31,7 +31,7 @@ export default function MapPage() {
   // ---------------------------------------
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);      
+      navigator.geolocation.getCurrentPosition(showPosition);
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
@@ -39,43 +39,43 @@ export default function MapPage() {
 
 
 
-function showPosition(position) {
-  myLatitude = position.coords.latitude;
-  myLongitude = position.coords.longitude;
+  function showPosition(position) {
+    myLatitude = position.coords.latitude;
+    myLongitude = position.coords.longitude;
 
-  if (myLatitude !== null && myLongitude !== null) {
-    console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
-    
-    // Assuming 'map' is accessible in this scope
-    map.setView([myLatitude, myLongitude], 13); 
-  } else {
-    console.error("Latitude or longitude is null."); 
+    if (myLatitude !== null && myLongitude !== null) {
+      console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
+
+      // Assuming 'map' is accessible in this scope
+      map.setView([myLatitude, myLongitude], 13);
+    } else {
+      console.error("Latitude or longitude is null.");
+    }
   }
-}
 
 
- 
+
 
   if (typeof window !== 'undefined') {
-  // Code that uses window or other browser-specific APIs
-  const fetchUserLocation = () => { 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;   
+    // Code that uses window or other browser-specific APIs
+    const fetchUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
 
-          getLocation();
-        },
-        (error) => {
-          console.log('Error getting user location:', error);   
+            getLocation();
+          },
+          (error) => {
+            console.log('Error getting user location:', error);
 
-        }
-      );
-    }
-  };
+          }
+        );
+      }
+    };
 
-  fetchUserLocation();
-} 
+    fetchUserLocation();
+  }
   // END OF GET CURRENT LOCATION --------------
   // ------------------------------------------
 
@@ -206,12 +206,12 @@ function showPosition(position) {
     }
 
     // Add a 3-second delay before calling initMap
-   
-      initMap(); 
-   
+
+    initMap();
+
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
-   
+
   }, []);
 
   const toggleSettings = () => {
@@ -275,7 +275,7 @@ function showPosition(position) {
   return (
     <>
       <Head>
-    <title>Ice Cream Van</title>
+        <title>Ice Cream Van</title>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
       </Head>
@@ -287,13 +287,21 @@ function showPosition(position) {
             alt="Settings"
             className={styles.settingsIcon}
             onClick={toggleSettings}
-          />  
-                  <div> {/* Add a wrapping div here */}
-    <span className={styles.loggedInAs}>Logged in as:</span>
-  </div>
-  <div> 
-    <span className={styles.userName}></span>
-    </div>
+          />
+
+          <table style="border-collapse: collapse;">
+            <tr>
+              <td>
+                <span className={styles.loggedInAs}>Logged in as:</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span className={styles.userName}></span>
+              </td>
+            </tr>
+          </table>
+
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
