@@ -38,19 +38,20 @@ export default function MapPage() {
   }
 
 
-  function showPosition(position) {
-    myLatitude = position.coords.latitude;
-    myLongitude = position.coords.longitude;
 
-    if (myLatitude !== null && myLongitude !== null) {
-      console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
-      // Use the latitude and longitude to center your Leaflet map or 
-      // perform other actions.
-    } else {
-      console.error("Latitude or longitude is null.");
-      // Handle the case where location data is not available.
-    }
+function showPosition(position) {
+  myLatitude = position.coords.latitude;
+  myLongitude = position.coords.longitude;
+
+  if (myLatitude !== null && myLongitude !== null) {
+    console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
+    
+    // Assuming 'map' is accessible in this scope
+    map.setView([myLatitude, myLongitude], 13); 
+  } else {
+    console.error("Latitude or longitude is null."); 
   }
+}
 
 
  
