@@ -96,7 +96,7 @@
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 22px 20px;
+  padding: 20px 13px;
   background-color: #80B8AB;
   width: 80%;
   flex-direction: row; /* Restored to default row direction */
