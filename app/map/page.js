@@ -338,7 +338,9 @@ export default function MapPage() {
               </button>
             </div>             
           )}
-           <div id="settingsPanelGap"></div>
+           <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
+
+           </div>
         </div>
 
         <div id="map" className={styles.mapContainer}></div>
