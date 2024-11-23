@@ -157,7 +157,10 @@
   cursor: pointer;
 }
 
-
+.settingsPanelRow {
+  display: flex; 
+  justify-content: space-between; /* Distribute space between buttons */
+}
 
 
 .loginDetailsContainer {
@@ -188,3 +191,5 @@
   font-size: 0.8em; /* Adjust font size as needed */
   margin-top: 25px; /* Adjust spacing as needed */
 }
+
+
