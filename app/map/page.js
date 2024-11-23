@@ -20,15 +20,7 @@ import { auth } from '../firebaseConfig.js';
 export default function MapPage() {
 
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      setUser(user);
-    });
-    return () => unsubscribe(); // Clean up the listener
-  }, []);
-
+  
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -102,9 +94,20 @@ export default function MapPage() {
 
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const analytics = getAnalytics(app);
+
+    const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setUser(user);
+    });
+    return () => unsubscribe(); // Clean up the listener
+  }, []);
+}
 
     // VAN NAME OLD CODE NO LONGER USED
     const vanNames = [
