@@ -329,6 +329,10 @@ export default function MapPage() {
           </div>
         </div>
 
+        
+
+        <div id="map" className={styles.mapContainer}></div>
+
         <div id="settingsPanel" style={{ display: "none" }}>
           <button onClick={logout} className={styles.loginButton}>Logout</button>
           {isOwner && (
@@ -340,7 +344,6 @@ export default function MapPage() {
           )}
         </div>
 
-        <div id="map" className={styles.mapContainer}></div>
       </div>
 
     </>
