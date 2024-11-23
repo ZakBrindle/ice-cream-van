@@ -153,8 +153,8 @@
   padding: 50px; /* Increased padding for spacing around content */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000; 
-  width: 80%; 
-  max-width: 80%; 
+  width: 100%; 
+  max-width: 100%; 
   margin-bottom: 100px; /* Increased margin to push the panel up */
   padding-bottom: 100px; /* Increased padding to add space below buttons*/ 
 }
