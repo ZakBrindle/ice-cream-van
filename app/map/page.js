@@ -240,7 +240,8 @@ export default function MapPage() {
 
   const toggleSettings = () => {
     const settingsPanel = document.getElementById("settingsPanel");
-    settingsPanel.classList.toggle(styles.settingsPanelActive); 
+    settingsPanel.style.display =
+      settingsPanel.style.display === "none" ? "block" : "none";
   };
 
   const userID_testing = 1;  // Replace with actual logged-in user ID later   // FORCE LOG IN AS SUGAR RUSH EXPRESS
@@ -328,10 +329,6 @@ export default function MapPage() {
           </div>
         </div>
 
-        
-
-        <div id="map" className={styles.mapContainer}></div>
-
         <div id="settingsPanel" style={{ display: "none" }}>
           <button onClick={logout} className={styles.loginButton}>Logout</button>
           {isOwner && (
@@ -343,6 +340,7 @@ export default function MapPage() {
           )}
         </div>
 
+        <div id="map" className={styles.mapContainer}></div>
       </div>
 
     </>
