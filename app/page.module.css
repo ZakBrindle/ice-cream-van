@@ -96,7 +96,7 @@
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 35px 20px;
+  padding: 22px 20px;
   background-color: #80B8AB;
   width: 80%;
   flex-direction: row; /* Restored to default row direction */
@@ -116,8 +116,8 @@
 
 .map {
   width: 100%;
-  height: calc(100% + 50px); /* Reduced map height    - 50px */
-  margin-top: -20px; /* Added margin to push map down */
+  height: calc(100% -20px); /* Reduced map height    - 50px */
+  margin-top: 0px; /* Added margin to push map down */
   border-radius: 30px;
 }
 
