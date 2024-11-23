@@ -240,8 +240,7 @@ export default function MapPage() {
 
   const toggleSettings = () => {
     const settingsPanel = document.getElementById("settingsPanel");
-    settingsPanel.style.display =
-      settingsPanel.style.display === "none" ? "block" : "none";
+    settingsPanel.classList.toggle(styles.settingsPanelActive); 
   };
 
   const userID_testing = 1;  // Replace with actual logged-in user ID later   // FORCE LOG IN AS SUGAR RUSH EXPRESS
