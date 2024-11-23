@@ -2,13 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 95vw;
-  max-width: 420px;
+  width: 100vw; /* Take full viewport width */
+  height: 100vh; /* Take full viewport height */
   background-color: #80B8AB; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px auto; /* Added margin for spacing */
+  margin: 0; /* Remove default margin */
 }
-
 /* ... other styles ... */
 /* PC "phone emulator" look */
 @media (min-width: 768px) { 
