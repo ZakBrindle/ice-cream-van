@@ -4,7 +4,7 @@ import Script from "next/script";
 import styles from "./page.module.css";
 import Head from 'next/head';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from './firebaseConfig'; // Import your Firebase config
+import { auth } from '../firebaseConfig.js'; // Import your Firebase config
 
 export default function Home() {
 
