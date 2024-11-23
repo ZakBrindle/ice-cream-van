@@ -14,14 +14,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-import { auth } from '../firebaseConfig.js';
-
 
 export default function MapPage() {
-
-
-  
-
 
   const [isLoading, setIsLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(true);
@@ -94,20 +88,9 @@ export default function MapPage() {
 
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const analytics = getAnalytics(app);
-
-    const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      setUser(user);
-    });
-    return () => unsubscribe(); // Clean up the listener
-  }, []);
-}
 
     // VAN NAME OLD CODE NO LONGER USED
     const vanNames = [
@@ -345,19 +328,6 @@ export default function MapPage() {
             <div className={styles.userName}></div>
           </div>
         </div>
-
-        <div>
-      {user ? (
-        // User is signed in
-        <div>
-          <p>Welcome, {user.displayName}!</p>
-          {/* ... other content for signed-in users ... */}
-        </div>
-      ) : (
-        // User is signed out
-        <SignIn />
-      )}
-    </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
           <button onClick={logout} className={styles.loginButton}>Logout</button>
