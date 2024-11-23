@@ -132,14 +132,18 @@
 
 
 /* Settings Panel */
-.settingsPanel {
-  top: 20px; 
-  left: 20px; 
+#settingsPanel {
+  position: fixed; /* Pin to the viewport */
+  bottom: 0; /* Align to the bottom */
+  left: 50%; 
+  transform: translateX(-50%); /* Center horizontally */
   background-color: #fff;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000; /* Ensure it's on top */
-  margin-bottom: 20px;
+  z-index: 1000; 
+  width: 80%; /* Adjust width as needed */
+  max-width: 400px; /* Limit the maximum width */
+  margin-bottom: 20px; /* Add some space from the bottom edge */
 }
 
 
