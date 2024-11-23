@@ -244,6 +244,16 @@ export default function MapPage() {
       settingsPanel.style.display === "none" ? "block" : "none";
   };
 
+
+  const updateMyRoute = () => {
+  
+  };
+
+
+  const getMyLocation = () => {
+    
+  };
+
   const userID_testing = 1;  // Replace with actual logged-in user ID later   // FORCE LOG IN AS SUGAR RUSH EXPRESS
 
   const toggleLocation = async () => {
@@ -330,31 +340,31 @@ export default function MapPage() {
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
-  <div className={styles.settingsPanelRow}> 
-    <button onClick={logout} className={styles.loginButton}>Logout</button>
-    {isOwner && (
-      <button onClick={toggleLocation} className={styles.loginButton}>
-        {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-      </button>
-    )}
-  </div>
-
-  <div className={styles.settingsPanelRow}> 
-    <button onClick={getMyLocation} className={styles.loginButton}>Get Current Location</button>
-    {isOwner && (
-      <button onClick={updateMyRoute} className={styles.loginButton}>Update My Route</button>
-    )}
-  </div>
-</div>
-
-          <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
-
+          <div className={styles.settingsPanelRow}>
+            <button onClick={logout} className={styles.loginButton}>Logout</button>
+            {isOwner && (
+              <button onClick={toggleLocation} className={styles.loginButton}>
+                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+              </button>
+            )}
           </div>
-        </div>
 
-        <div id="map" className={styles.mapContainer}></div>
-        <div className={styles.createdBy}>Created by Zak Brindle</div>
+          <div className={styles.settingsPanelRow}>
+            <button onClick={getMyLocation} className={styles.loginButton}>Get Current Location</button>
+            {isOwner && (
+              <button onClick={updateMyRoute} className={styles.loginButton}>Update My Route</button>
+            )}
+          </div>
+      
+
+        <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
+
+        </div>
       </div>
+
+      <div id="map" className={styles.mapContainer}></div>
+      <div className={styles.createdBy}>Created by Zak Brindle</div>
+    </div >
 
     </>
   );
