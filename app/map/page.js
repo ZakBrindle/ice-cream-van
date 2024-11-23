@@ -350,9 +350,9 @@ export default function MapPage() {
           </div>
 
           <div className={styles.settingsPanelRow}>
-            <button onClick={getMyLocation} className={styles.loginButton}>Get Current Location</button>
+            <button onClick={getMyLocation} className={styles.loginButton}>Get Location</button>
             {isOwner && (
-              <button onClick={updateMyRoute} className={styles.loginButton}>Update My Route</button>
+              <button onClick={updateMyRoute} className={styles.loginButton}>My Route</button>
             )}
           </div>
       
