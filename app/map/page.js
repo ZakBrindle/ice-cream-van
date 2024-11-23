@@ -14,8 +14,22 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
+import { auth } from './firebaseConfig';
+
 
 export default function MapPage() {
+
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setUser(user);
+    });
+    return () => unsubscribe(); // Clean up the listener
+  }, []);
+
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(true);
@@ -328,6 +342,19 @@ export default function MapPage() {
             <div className={styles.userName}></div>
           </div>
         </div>
+
+        <div>
+      {user ? (
+        // User is signed in
+        <div>
+          <p>Welcome, {user.displayName}!</p>
+          {/* ... other content for signed-in users ... */}
+        </div>
+      ) : (
+        // User is signed out
+        <SignIn />
+      )}
+    </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
           <button onClick={logout} className={styles.loginButton}>Logout</button>
