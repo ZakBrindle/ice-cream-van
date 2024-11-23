@@ -52,7 +52,7 @@ export default function MapPage() {
     if (myLatitude !== null && myLongitude !== null) {
       console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
 
-      
+
     } else {
       console.error("Latitude or longitude is null.");
     }
@@ -113,16 +113,16 @@ export default function MapPage() {
       setIsLoading(false);
     }, 3300);
 
-   // Initialize map after X seconds, but only if not already initialized
-  let mapInitialized = false; 
-  const timer_short = setTimeout(() => {
-    if (!mapInitialized) {
-      initMap();
-      mapInitialized = true;
-    }
-  }, 3000);
+    // Initialize map after X seconds, but only if not already initialized
+    let mapInitialized = false;
+    const timer_short = setTimeout(() => {
+      if (!mapInitialized) {
+        initMap();
+        mapInitialized = true;
+      }
+    }, 3000);
 
- 
+
 
 
     return () => {
@@ -314,35 +314,35 @@ export default function MapPage() {
       )}
 
 
-  
-        <div className={styles.app}>
-          <div className={styles.topBar}>
-            <img
-              src="./images/settings.png"
-              alt="Settings"
-              className={styles.settingsIcon}
-              onClick={toggleSettings}
-            />
-            <div className={styles.loginDetailsContainer}>
-              <div className={styles.loggedInAs}>Logged in as:</div>
-              <div className={styles.userName}></div>
-            </div>
-          </div>
 
-          <div id="settingsPanel" style={{ display: "none" }}>
-            <button onClick={logout}>Logout</button>
-            {isOwner && (
-              <div id="vanOwnerSettings">
-                <button onClick={toggleLocation}>
-                  {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-                </button>
-              </div>
-            )}
+      <div className={styles.app}>
+        <div className={styles.topBar}>
+          <img
+            src="./images/settings.png"
+            alt="Settings"
+            className={styles.settingsIcon}
+            onClick={toggleSettings}
+          />
+          <div className={styles.loginDetailsContainer}>
+            <div className={styles.loggedInAs}>Logged in as:</div>
+            <div className={styles.userName}></div>
           </div>
-
-          <div id="map" className={styles.mapContainer}></div>
         </div>
-    
+
+        <div id="settingsPanel" style={{ display: "none" }}>
+          <button onClick={logout} className={styles.loginButton}>Logout</button>
+          {isOwner && (
+            <div id="vanOwnerSettings">
+              <button onClick={toggleLocation} className={styles.loginButton}>
+                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div id="map" className={styles.mapContainer}></div>
+      </div>
+
     </>
   );
 }
