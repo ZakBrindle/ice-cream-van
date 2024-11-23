@@ -344,6 +344,7 @@ export default function MapPage() {
         </div>
 
         <div id="map" className={styles.mapContainer}></div>
+        <div className={styles.createdBy}>Created by Zak Brindle</div> 
       </div>
 
     </>

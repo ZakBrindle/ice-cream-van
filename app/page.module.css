@@ -180,3 +180,11 @@
   align-items: center;
   z-index: 1000000; /* Ensure it's on top of other elements */
 }
+
+
+.createdBy {
+  text-align: center;
+  color: darkgray; 
+  font-size: 0.8em; /* Adjust font size as needed */
+  margin-top: 10px; /* Adjust spacing as needed */
+}
