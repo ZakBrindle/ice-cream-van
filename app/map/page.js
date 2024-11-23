@@ -336,8 +336,9 @@ export default function MapPage() {
               <button onClick={toggleLocation} className={styles.loginButton}>
                 {isLocationOn ? "Turn Off Location" : "Turn On Location"}
               </button>
-            </div>
+            </div>             
           )}
+           <div id="settingsPanelGap"></div>
         </div>
 
         <div id="map" className={styles.mapContainer}></div>
