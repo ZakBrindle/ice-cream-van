@@ -14,7 +14,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-import { auth } from './firebaseConfig.js';
+import { auth } from '../firebaseConfig.js';
 
 
 export default function MapPage() {
