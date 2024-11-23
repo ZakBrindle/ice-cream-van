@@ -341,20 +341,20 @@ export default function MapPage() {
 
         <div id="settingsPanel" style={{ display: "none" }}>
           <div className={styles.settingsPanelRow}>
-            <button onClick={logout} className={styles.loginButton} style={{ marginRight: "2px" }}>Logout</button>
+            <button onClick={logout} className={styles.settingsButton} style={{ marginRight: "10px" }}>Logout</button>
            
-            <button onClick={getMyLocation} className={styles.loginButton} style={{ marginLeft: "2px" }}>Get Location</button>
+            <button onClick={getMyLocation} className={styles.settingsButton} style={{ marginLeft: "10px" }}>Get Location</button>
           </div>
 
           <div className={styles.settingsPanelRow}>
           {isOwner && (
-              <button onClick={toggleLocation} className={styles.loginButton} style={{ marginRight: "2px" }}>
+              <button onClick={toggleLocation} className={styles.settingsButton} style={{ marginRight: "10px" }}>
                 {isLocationOn ? "Turn Off Location" : "Turn On Location"}
               </button>
             )}
 
             {isOwner && (
-              <button onClick={updateMyRoute} className={styles.loginButton} style={{ marginLeft: "2px" }}>My Route</button>
+              <button onClick={updateMyRoute} className={styles.settingsButton} style={{ marginLeft: "10px" }}>My Route</button>
             )}
           </div>
       
