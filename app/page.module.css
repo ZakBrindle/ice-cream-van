@@ -184,7 +184,7 @@
 
 .createdBy {
   text-align: center;
-  color: darkgray; 
+  color: rgba(243, 243, 243, 0.712); 
   font-size: 0.8em; /* Adjust font size as needed */
-  margin-top: 10px; /* Adjust spacing as needed */
+  margin-top: 25px; /* Adjust spacing as needed */
 }
