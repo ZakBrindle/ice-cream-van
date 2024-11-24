@@ -275,7 +275,7 @@ export default function MapPage() {
           />
           <div className={styles.loginDetailsContainer}>
             <div className={styles.loggedInAs}>Logged in as:</div>
-            <div className={styles.userName}></div> {/* Display the user's name here */}
+            <div className={user.displayName}></div> {/* Display the user's name here - styles.userName for firebase old */}
           </div>
         </div>
 
