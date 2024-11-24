@@ -26,7 +26,6 @@ export default function Home() {
             
             // TODO: Store user data in your database or state management solution
 
-            window.location.href = "/app"; 
         } catch (error) {
             // Handle Errors here.
             const errorCode = error.code;
@@ -54,6 +53,7 @@ export default function Home() {
                 <input type="text" id="username" placeholder="Username" className={styles.inputField} />
                 <input type="password" id="password" placeholder="Password" className={styles.inputField} />
                 <button onClick={login} className={styles.loginButton}>Login</button>
+                <hr className={styles.separator} /> {/* Separator line */}
                 <button onClick={signInWithGoogle} className={styles.loginButton}>Sign in with Google</button>
                 <br />
                 <button onClick={guestLogin} className={styles.loginButton}>Sign in as Guest</button>
