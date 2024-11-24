@@ -311,7 +311,7 @@ export default function MapPage() {
 
 
       {(bannerMessage && isGuest) && (
-        <div className={styles.banner} style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 1000 }}>
+        <div className={styles.banner} style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 1000000000000000 }}>
           <div className={styles.bannerMessage}>{bannerMessage}</div>
           {bannerType === 'sticky' && (
             <button className={styles.bannerClose} onClick={closeBanner}>
