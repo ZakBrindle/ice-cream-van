@@ -4,12 +4,20 @@ import Script from "next/script";
 import styles from "./page.module.css";
 import Head from 'next/head';
 import { initializeApp } from "firebase/app";
-import firebaseConfig from './firebaseConfig.js';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+let firebaseConfig;
+
+if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
+  firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
+} else {
+  firebaseConfig = await import('./firebaseConfig.js').then(module => module.default);
+}
+
 
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app); // Export auth
 const provider = new GoogleAuthProvider();
 
 export default function Home() {
@@ -68,7 +76,11 @@ function login() {
   window.location.href = "/app";
 }
 
-function guestLogin() {
-  // ... (Guest login logic)
-  window.location.href = "/map";
+
+async function guestLogin() {
+  try {
+    window.location.href = "/map";
+  } catch (error) {
+    console.error("Error signing in anonymously:", error);
+  }
 }

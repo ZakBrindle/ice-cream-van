@@ -6,104 +6,108 @@ import styles from "../page.module.css";
 import Head from "next/head";
 
 import 'leaflet/dist/leaflet.css';
-import firebaseConfig from '../firebaseConfig.js';
+
+
+let firebaseConfig;
+
+if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+} else {
+  firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
+}
+
 
 import { doc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../page"; // Import auth from page.js
 
 export default function MapPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(true);
   const [isLocationOn, setIsLocationOn] = useState(false);
-  const [user, setUser] = useState(null); // Add state for the user object
-
+  const [user, setUser] = useState(null);
   const [bannerMessage, setBannerMessage] = useState(null);
   const [bannerType, setBannerType] = useState(null);
-  const [isGuest, setIsGuest] = useState(false); // Add guest state
+  const [isGuest, setIsGuest] = useState(false);
 
-  let defaultLatitude = "53.765284407793764";
-  let defaultLongitude = "-2.708824723749953";
+  const [currentLocation, setCurrentLocation] = useState(null); 
+  const [map, setMap] = useState(null);
+  const [myLocationCircle, setMyLocationCircle] = useState(null);
 
-  let blackburndefaultLatitude = "53.74328616942579";
-  let blackburndefaultLongitude = "-2.493528328604127";
 
-  let myLatitude = defaultLatitude;
-  let myLongitude = defaultLongitude;
+  const cicle_Color = '#CD506D';
+  const circle_fillColor = '#75ac9f';
+  const circle_fillOpacity = 0.4;
+  const circle_radius = 1500;
 
-  // GET CURRENT LOCATION -------------------
-  // ---------------------------------------
-  function getLocation() {
+  let circleSpawned = false;
+
+  // Function to get the current location
+  const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          setCurrentLocation([latitude, longitude]);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setBannerMessage("Error getting your location");
+          setBannerType('timed');
+        }
+      );
     } else {
       console.error("Geolocation is not supported by this browser.");
+      setBannerMessage("Geolocation is not supported");
+      setBannerType('timed');
     }
-  }
+  };
 
-  function showPosition(position) {
-    myLatitude = position.coords.latitude;
-    myLongitude = position.coords.longitude;
+  // Function to update the map with the current location
+  const updateMapLocation = () => {
+    if (map && currentLocation) {
+      map.setView(currentLocation, 13); 
 
-    if (myLatitude !== null && myLongitude !== null) {
-      console.log("Latitude: " + myLatitude + ", Longitude: " + myLongitude);
-    } else {
-      console.error("Latitude or longitude is null.");
-    }
-  }
-
-  if (typeof window !== 'undefined') {
-    const fetchUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            getLocation();
-          },
-          (error) => {
-            console.log('Error getting user location:', error);
-          }
-        );
+      if (myLocationCircle) {
+        // Move the existing circle to the new location
+        myLocationCircle.setLatLng(currentLocation);
+      } else {
+        // Create the circle initially
+        const newCircle = L.circle(currentLocation, {
+          color: cicle_Color,
+          fillColor: circle_fillColor,
+          fillOpacity: circle_fillOpacity,
+          radius: circle_radius
+        }).addTo(map);
+        setMyLocationCircle(newCircle); // Now you can use setMyLocationCircle
       }
-    };
+    }
+  };
 
-    fetchUserLocation();
-  }
-  // END OF GET CURRENT LOCATION --------------
-  // ------------------------------------------
+  // Get location on button click
+  const manuallyGetLocation = () => {
+    getCurrentLocation(); 
+  };
+
 
   useEffect(() => {
+
+    let myLocationCircle;
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const analytics = getAnalytics(app);
-    const auth = getAuth(); // Get Auth instance
-
-
-
-
-
-    // VAN NAME OLD CODE NO LONGER USED
-    const vanNames = [
-      "Scoop Dogg",
-      "Lord of the Cones",
-      "Game of Cones",
-      "Sherlock Cones",
-      "Sugar Rush Express",
-      "Lickety-Split",
-      "The Conefather",
-      "The Dairy Godmother",
-      "Diary of a Whippy Kidd"
-    ];
-    // // // //
 
     // Hide loading screen after X seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3300);
 
-    // Initialize map after X seconds, but only if not already initialized
+    // Initialize map after X seconds
     let mapInitialized = false;
     const timer_short = setTimeout(() => {
       if (!mapInitialized) {
@@ -115,14 +119,14 @@ export default function MapPage() {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
 
-      // Check if the user is a guest (replace with your actual guest check)
+      // Check if the user is a guest 
       if (currentUser && currentUser.isAnonymous) {
         setIsGuest(true);
         setBannerMessage("Logged in as Guest.");
         setBannerType('sticky');
       } else {
         setIsGuest(false);
-        setBannerMessage(''); // Clear banner if not a guest
+        setBannerMessage(''); 
         setBannerType('');
       }
     });
@@ -130,12 +134,12 @@ export default function MapPage() {
     return () => {
       clearTimeout(timer);
       clearTimeout(timer_short);
-      unsubscribeAuth(); // Unsubscribe from auth state changes
+      unsubscribeAuth(); 
     };
 
     async function initMap() {
       console.log("CREATING MAP");
-      const L = await import("leaflet"); // Dynamically import Leaflet
+      const L = await import("leaflet"); 
 
       const myIcon = L.icon({
         iconUrl: './images/van.png',
@@ -151,11 +155,16 @@ export default function MapPage() {
         popupAnchor: [-3, -46]
       });
 
-      const map = L.map("map").setView([myLatitude, myLongitude], 13);
+      // CREATE THE MAP - use currentLocation if available, otherwise [0, 0]
+      const map = L.map("map").setView(currentLocation || [0, 0], 13); 
+      setMap(map);
+
+    
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+      }).addTo(map);  
+
 
       async function fetchUserData() {
         try {
@@ -191,8 +200,8 @@ export default function MapPage() {
             if (user.active) {
               console.log("CREATING VAN ON MAP: Lat (" + user.latitude + ") Long (" + user.longitude + ")");
 
-              // Assuming userID_testing is replaced with the actual user ID
-              if (user.userID === userID_testing) {
+              // Use user.uid to identify the current user's van
+              if (user.userID === auth.currentUser.uid) { 
                 L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
               } else {
                 L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
@@ -209,6 +218,16 @@ export default function MapPage() {
     }
   }, []);
 
+  // Get initial location when the component mounts
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  // Update map whenever the currentLocation changes
+  useEffect(() => {
+    updateMapLocation();
+  }, [currentLocation, map]); 
+
   const toggleSettings = () => {
     const settingsPanel = document.getElementById("settingsPanel");
     settingsPanel.style.display =
@@ -220,20 +239,24 @@ export default function MapPage() {
   };
 
   const getMyLocation = () => {
-    // ... (Implementation for getting current location)
+    manuallyGetLocation();
   };
-
-  const userID_testing = 1; // Replace with actual logged-in user ID later
 
   const toggleLocation = async () => {
     try {
       setIsLocationOn(!isLocationOn);
 
-      const userDocRef = doc(db, 'users', userID_testing);
+      // Use user.uid to get the user's ID
+      if (user && user.uid) {
+        const userDocRef = doc(db, 'users', user.uid); 
 
-      await updateDoc(userDocRef, {
-        active: !isLocationOn,
-      });
+        await updateDoc(userDocRef, {
+          active: !isLocationOn,
+        });
+      } else {
+        console.error("User not logged in or ID not available");
+        // Handle the error appropriately, e.g., show a message to the user
+      }
 
     } catch (error) {
       console.error("Error toggling location:", error);
@@ -270,8 +293,6 @@ export default function MapPage() {
   }, [bannerMessage, bannerType]);
 
 
-
-
   return (
     <>
       <Head>
@@ -299,9 +320,6 @@ export default function MapPage() {
         </div>
       )}
 
-
-
-
       <div className={styles.app}>
         <div className={styles.topBar}>
           <img
@@ -311,14 +329,12 @@ export default function MapPage() {
             onClick={toggleSettings}
           />
 
-          {user && ( // Conditionally render if user is logged in
+          {user && ( 
             <div className={styles.loginDetailsContainer}>
               <div className={styles.loggedInAs}>Logged in as:</div>
-              <div className={styles.userName}>{user.displayName}</div>{/* Display the user's name here*/}
+              <div className={styles.userName}>{user.displayName}</div>
             </div>
           )}
-
-
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
@@ -346,18 +362,13 @@ export default function MapPage() {
         <div id="map" className={styles.mapContainer}></div>
         <div className={styles.createdBy}>Created by Zak Brindle</div>
 
-
-        {/* User details section (for testing) */}
-        {user && ( // Conditionally render if user is logged in
+        {user && ( 
           <div className={styles.userDetails}>
             <p>User ID: {user.uid}</p>
             <p>Name: {user.displayName}</p>
             <p>Email: {user.email}</p>
-            {/* Add more details as needed */}
           </div>
         )}
-
-
       </div>
     </>
   );
