@@ -162,7 +162,7 @@ export default function MapPage() {
               if (user.userID === userID_testing) {
                 accountName = user.userName;
                 console.log("Logged in user detected: " + accountName);
-                setUsersName();
+               // setUsersName(); THIS IS THE OLD WAY!!
               }
             }
           });
@@ -275,7 +275,7 @@ export default function MapPage() {
           />
           <div className={styles.loginDetailsContainer}>
             <div className={styles.loggedInAs}>Logged in as:</div>
-            <div className={user.displayName}></div> {/* Display the user's name here - styles.userName for firebase old */}
+            <div className={styles.userName}>{user.displayName}</div>{/* Display the user's name here - styles.userName for firebase old */}
           </div>
         </div>
 
