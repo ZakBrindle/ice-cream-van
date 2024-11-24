@@ -48,15 +48,13 @@ export default function Home() {
                 <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} />
                 <h2>Ice Cream Van</h2>
                 <br />
-                <br />
-                <br />
                 <input type="text" id="username" placeholder="Username" className={styles.inputField} />
                 <input type="password" id="password" placeholder="Password" className={styles.inputField} />
                 <button onClick={login} className={styles.loginButton}>Login</button>
                 <hr className={styles.separator} /> {/* Separator line */}
                 <button onClick={signInWithGoogle} className={styles.loginButton}>Sign in with Google</button>
-                <br />
                 <button onClick={guestLogin} className={styles.loginButton}>Sign in as Guest</button>
+                <br />
             </div>
         </div>
     );
