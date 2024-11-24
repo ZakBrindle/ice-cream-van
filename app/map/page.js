@@ -20,6 +20,10 @@ export default function MapPage() {
   const [isLocationOn, setIsLocationOn] = useState(false);
   const [user, setUser] = useState(null); // Add state for the user object
 
+  const [bannerMessage, setBannerMessage] = useState(null);
+  const [bannerType, setBannerType] = useState(null);
+  const [isGuest, setIsGuest] = useState(false); // Add guest state
+
   let defaultLatitude = "53.765284407793764";
   let defaultLongitude = "-2.708824723749953";
 
@@ -76,6 +80,10 @@ export default function MapPage() {
     const analytics = getAnalytics(app);
     const auth = getAuth(); // Get Auth instance
 
+
+
+
+
     // VAN NAME OLD CODE NO LONGER USED
     const vanNames = [
       "Scoop Dogg",
@@ -104,8 +112,19 @@ export default function MapPage() {
       }
     }, 3000);
 
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => { // Auth state listener
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      // Check if the user is a guest (replace with your actual guest check)
+      if (currentUser && currentUser.isAnonymous) {
+        setIsGuest(true);
+        setBannerMessage("Logged in as Guest.");
+        setBannerType('sticky');
+      } else {
+        setIsGuest(false);
+        setBannerMessage(''); // Clear banner if not a guest
+        setBannerType('');
+      }
     });
 
     return () => {
@@ -229,14 +248,35 @@ export default function MapPage() {
       })
       .catch((error) => {
         console.error("Error signing out:", error);
+        setBannerMessage("Error signing out. Please try again.");
+        setBannerType('sticky');
       });
   };
+
+  const closeBanner = () => {
+    setBannerMessage(null);
+    setBannerType(null);
+  };
+
+  useEffect(() => {
+    let timer;
+    if (bannerType === 'timed' && bannerMessage) {
+      timer = setTimeout(() => {
+        closeBanner();
+      }, 5000); // 5 seconds
+    }
+
+    return () => clearTimeout(timer);
+  }, [bannerMessage, bannerType]);
+
+
+
 
   return (
     <>
       <Head>
         <title>Ice Cream Van</title>
-        <link rel="icon" href="/logo_nobg.ico" /> 
+        <link rel="icon" href="/logo_nobg.ico" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       </Head>
 
@@ -246,6 +286,21 @@ export default function MapPage() {
           <p>Searching for ice cream trucks...</p>
         </div>
       )}
+
+
+      {(bannerMessage && isGuest) && (
+        <div className={styles.banner} style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 1000 }}>
+          <div className={styles.bannerMessage}>{bannerMessage}</div>
+          {bannerType === 'sticky' && (
+            <button className={styles.bannerClose} onClick={closeBanner}>
+              X
+            </button>
+          )}
+        </div>
+      )}
+
+
+
 
       <div className={styles.app}>
         <div className={styles.topBar}>

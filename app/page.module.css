@@ -218,3 +218,27 @@
   border: none;
   border-top: 1px solid #9c9c9c77; /* Adjust color and thickness as needed */
 }
+
+
+/* BANNER */
+.banner {
+  background-color: #fdd; /* Light red background for error */
+  color: #333;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.bannerMessage {
+  font-weight: bold;
+}
+
+.bannerClose {
+  /* Style your close button as needed */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
