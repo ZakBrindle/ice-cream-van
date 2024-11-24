@@ -21,6 +21,7 @@ export default function Home() {
             const token = credential.accessToken;
             const user = result.user;
             console.log(user); 
+            window.location.href = "/map";
             // You can access user.uid, user.displayName, user.email, etc.
             
             // TODO: Store user data in your database or state management solution
