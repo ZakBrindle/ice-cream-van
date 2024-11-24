@@ -221,19 +221,6 @@ export default function MapPage() {
     }
   };
 
-  var accountName = "";
-
-  async function setUsersName() {
-    console.log("ACCOUNT NAME: " + accountName);
-    if (accountName) {
-      const userNameSpan = document.querySelector(`.${styles.userName}`);
-      if (userNameSpan) {
-        userNameSpan.textContent = { user.displayName };
-      }
-    }
-  }
-  setUsersName();
-
   const logout = () => {
     auth.signOut()
       .then(() => {
@@ -275,7 +262,7 @@ export default function MapPage() {
             </div>
           )}
 
-          
+
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
