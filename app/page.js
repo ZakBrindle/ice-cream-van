@@ -9,7 +9,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
- // firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('./firebaseConfig.js').then(module => module.default);
 }
@@ -61,7 +61,7 @@ export default function Home() {
         <br />
         <input type="text" id="username" placeholder="Username" className={styles.inputField} />
         <input type="password" id="password" placeholder="Password" className={styles.inputField} />
-        <button onClick={login} className={styles.loginButton} disabled>Login</button>
+        <button onClick={login} className={styles.loginButton} style={{ backgroundColor: 'grey' }} disabled>Login</button>
         <hr className={styles.separator} /> {/* Separator line */}
         <button onClick={signInWithGoogle} className={styles.loginButton}>Sign in with Google</button>
         <button onClick={guestLogin} className={styles.loginButton}>Sign in as Guest</button>

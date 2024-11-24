@@ -11,7 +11,7 @@ import 'leaflet/dist/leaflet.css';
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -240,6 +240,7 @@ export default function MapPage() {
 
   const getMyLocation = () => {
     manuallyGetLocation();
+    toggleSettings();
   };
 
   const toggleLocation = async () => {
@@ -338,22 +339,22 @@ export default function MapPage() {
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
-          <div className={styles.settingsPanelRow}>
-            <button onClick={logout} className={styles.settingsButton} style={{ marginRight: "10px" }}>Logout</button>
-            <button onClick={getMyLocation} className={styles.settingsButton} style={{ marginLeft: "10px" }}>Get Location</button>
-          </div>
-
-          <div className={styles.settingsPanelRow}>
+         
+           
+            <button onClick={getMyLocation} className={styles.settingsButton}>Get Location</button>  
+       
             {isOwner && (
-              <button onClick={toggleLocation} className={styles.settingsButton} style={{ marginRight: "10px" }}>
+              <button onClick={toggleLocation} className={styles.settingsButton}>
                 {isLocationOn ? "Turn Off Location" : "Turn On Location"}
               </button>
             )}
 
             {isOwner && (
-              <button onClick={updateMyRoute} className={styles.settingsButton} style={{ marginLeft: "10px" }}>My Route</button>
+              <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button>
             )}
-          </div>
+
+            <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
+          
 
           <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
           </div>
