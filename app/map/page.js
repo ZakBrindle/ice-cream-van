@@ -236,7 +236,7 @@ export default function MapPage() {
     <>
       <Head>
         <title>Ice Cream Van</title>
-        <link rel="icon" href="./logo_nobg.ico" /> 
+        <link rel="icon" href="/logo_nobg.ico" /> 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       </Head>
 
