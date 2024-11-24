@@ -214,7 +214,7 @@
 }
 
 .separator {
-  margin: 10px 30px; /* Adjust spacing as needed */
+  margin: 10px 80px; /* Adjust spacing as needed */
   border: none;
-  border-top: 1px solid #2c2c2c77; /* Adjust color and thickness as needed */
+  border-top: 1px solid #9c9c9c77; /* Adjust color and thickness as needed */
 }
