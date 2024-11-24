@@ -157,13 +157,6 @@ export default function MapPage() {
 
             if (user.isVan && user.active) {
               vans.push(user);
-
-              // Assuming userID_testing is replaced with the actual user ID
-              if (user.userID === userID_testing) {
-                accountName = user.userName;
-                console.log("Logged in user detected: " + accountName);
-               // setUsersName(); THIS IS THE OLD WAY!!
-              }
             }
           });
 
@@ -235,10 +228,11 @@ export default function MapPage() {
     if (accountName) {
       const userNameSpan = document.querySelector(`.${styles.userName}`);
       if (userNameSpan) {
-        userNameSpan.textContent = accountName;
+        userNameSpan.textContent = { user.displayName };
       }
     }
   }
+  setUsersName();
 
   const logout = () => {
     auth.signOut()
@@ -273,10 +267,15 @@ export default function MapPage() {
             className={styles.settingsIcon}
             onClick={toggleSettings}
           />
-          <div className={styles.loginDetailsContainer}>
-            <div className={styles.loggedInAs}>Logged in as:</div>
-            <div className={styles.userName}>{user.displayName}</div>{/* Display the user's name here - styles.userName for firebase old */}
-          </div>
+
+          {user && ( // Conditionally render if user is logged in
+            <div className={styles.loginDetailsContainer}>
+              <div className={styles.loggedInAs}>Logged in as:</div>
+              <div className={styles.userName}>{user.displayName}</div>{/* Display the user's name here*/}
+            </div>
+          )}
+
+          
         </div>
 
         <div id="settingsPanel" style={{ display: "none" }}>
