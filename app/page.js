@@ -53,7 +53,7 @@ export default function Home() {
         <br />
         <input type="text" id="username" placeholder="Username" className={styles.inputField} />
         <input type="password" id="password" placeholder="Password" className={styles.inputField} />
-        <button onClick={login} className={styles.loginButton}>Login</button>
+        <button onClick={login} className={styles.loginButton} disabled>Login</button>
         <hr className={styles.separator} /> {/* Separator line */}
         <button onClick={signInWithGoogle} className={styles.loginButton}>Sign in with Google</button>
         <button onClick={guestLogin} className={styles.loginButton}>Sign in as Guest</button>
