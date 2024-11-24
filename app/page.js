@@ -4,7 +4,7 @@ import Script from "next/script";
 import styles from "./page.module.css";
 import Head from 'next/head';
 import { initializeApp } from "firebase/app";
-import firebaseConfig from '../firebaseConfig.js';
+import firebaseConfig from './firebaseConfig.js';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
