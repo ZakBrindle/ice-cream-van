@@ -9,9 +9,12 @@ import 'leaflet/dist/leaflet.css';
 
 
 let firebaseConfig;
+let dev = true;
 
-if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+//typeof window !== 'undefined' && window.location.hostname.includes('localhost')
+
+if (dev) {
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -337,6 +340,7 @@ export default function MapPage() {
             </div>
           )}
         </div>
+        <br/>
 
         <div id="settingsPanel" style={{ display: "none" }}>
          
