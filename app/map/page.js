@@ -14,7 +14,7 @@ let dev = true;
 //typeof window !== 'undefined' && window.location.hostname.includes('localhost')
 
 if (dev) {
-  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+ // firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
