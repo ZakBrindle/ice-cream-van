@@ -140,6 +140,7 @@ const handleSubmit = async () => {
       hasVan: hasVan,
       vanName: vanName,
       vanIcon: selectedVanIcon,
+      active: false,
       location: new GeoPoint(0, 0), // Add the location field
     };
 
