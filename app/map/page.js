@@ -1,7 +1,7 @@
 // app/map/page.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "../page.module.css";
 import Head from "next/head";
 
@@ -12,7 +12,7 @@ let firebaseConfig;
 
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -22,6 +22,11 @@ import { doc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { GeoPoint } from "firebase/firestore";
+import {
+  getDoc, // Import getDoc
+} from "firebase/firestore";
+
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../page"; // Import auth from page.js
 
@@ -33,6 +38,7 @@ export default function MapPage() {
   const [bannerMessage, setBannerMessage] = useState(null);
   const [bannerType, setBannerType] = useState(null);
   const [isGuest, setIsGuest] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [map, setMap] = useState(null);
@@ -45,6 +51,8 @@ export default function MapPage() {
   const circle_radius = 1500;
 
   let circleSpawned = false;
+
+  
 
   // Function to get the current location
   const getCurrentLocation = () => {
@@ -95,6 +103,28 @@ export default function MapPage() {
   };
 
 
+  
+  const updateLocationOnDatabase = async () => {
+    try {     
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const userDocRef = doc(db, "users", user.uid);
+  
+      const userData = {
+        // Remove userID: user.uid, 
+        location: new GeoPoint(currentLocation[0], currentLocation[1]), // Use GeoPoint
+      };
+  
+      await updateDoc(userDocRef, userData); // Use updateDoc to update
+      console.log("Location saved to database:" + currentLocation);  
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      alert("Error saving location (" + currentLocation + ") to database. Please try again.");
+    }
+  };
+
+
+
   useEffect(() => {
 
     let myLocationCircle;
@@ -117,8 +147,26 @@ export default function MapPage() {
       }
     }, 3000);
 
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribeAuth = onAuthStateChanged(auth, async  (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);        
+      }
+
+      try {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          setUserData(userDoc.data()); // Set user data in state
+        }
+
+
+
+
+
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
 
       // Check if the user is a guest 
       if (currentUser && currentUser.isAnonymous) {
@@ -127,8 +175,8 @@ export default function MapPage() {
         setBannerType('sticky');
       } else {
         setIsGuest(false);
-        setBannerMessage('');
-        setBannerType('');
+        setBannerMessage('Logged in');
+        setBannerType('sticky');
       }
     });
 
@@ -156,6 +204,13 @@ export default function MapPage() {
         popupAnchor: [-3, -46]
       });
 
+      const myIcon_bw = L.icon({
+        iconUrl: './images/van-bw.png',
+        iconSize: [50, 50],
+        iconAnchor: [22, 50],
+        popupAnchor: [-3, -46]
+      });
+
       // CREATE THE MAP - use currentLocation if available, otherwise [0, 0]
       const map = L.map("map").setView(currentLocation || [0, 0], 13);
       setMap(map);
@@ -173,18 +228,33 @@ export default function MapPage() {
           const querySnapshot = await getDocs(usersRef);
           const vans = [];
 
+
           querySnapshot.forEach((doc) => {
             const userData = doc.data();
             const user = {
               longitude: userData.location._long,
               latitude: userData.location._lat,
-              userName: userData.userName,
+              userName: userData.vanName,
               active: userData.active,
               userID: userData.userID,
-              isVan: userData.isVan
+              isVan: userData.isVan,
+              hasVan: userData.hasVan
             };
 
+            if(!user.active)
+            {
+              if(user.userID === user.uid)
+                {
+                    // van UID = my Google UID
+                    vans.push(user);
+                } 
+            }
+
             if (user.isVan && user.active) {
+             // vans.push(user);
+            }
+
+            if (user.hasVan && user.active) {
               vans.push(user);
             }
           });
@@ -201,6 +271,11 @@ export default function MapPage() {
             if (user.active) {
               console.log("CREATING VAN ON MAP: Lat (" + user.latitude + ") Long (" + user.longitude + ")");
 
+              if(!user.active)
+              {
+                myIcon_me = myIcon_bw;
+              }
+
               // Use user.uid to identify the current user's van
               if (user.userID === auth.currentUser.uid) {
                 L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
@@ -216,13 +291,23 @@ export default function MapPage() {
 
       fetchUserData();
       setInterval(fetchUserData, 60 * 1000);
+    
+      // Set up the interval to update location every X seconds
+      updateLocationOnDatabase(); // run once first, then every 60 seconds (60 * 1000)
+    const intervalId = setInterval(updateLocationOnDatabase, 60 * 1000); 
+  
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId); 
+    
     }
-  }, []);
+  }, [currentLocation, user]);
 
   // Get initial location when the component mounts
   useEffect(() => {
     getCurrentLocation();
   }, []);
+
+  
 
   // Update map whenever the currentLocation changes
   useEffect(() => {
@@ -300,6 +385,7 @@ export default function MapPage() {
   };
 
 
+
   return (
     <>
       <Head>
@@ -336,14 +422,21 @@ export default function MapPage() {
             onClick={toggleSettings}
           />
 
-          {user && (
-            <button className={styles.userNameButton} onClick={goToWelcome}>
-              <div className={styles.loginDetailsContainer}>
-                <div className={styles.loggedInAs}>Logged in as:</div>
-                <div className={styles.userName}>{user.displayName}</div>
-              </div>
-            </button>
-          )}
+{user && userData && (
+    <button className={styles.userNameButton} onClick={goToWelcome}>
+      <div className={styles.loginDetailsContainer}>
+        <img 
+          src={`/images/profile-pics/${userData.profilePicture}.jpg`} 
+          alt="Profile Picture" 
+          className={styles.profilePictureSmall} 
+        />
+        <div> {/* Wrap the text in a div */}
+          <div className={styles.loggedInAs}>Logged in as:</div>
+          <div className={styles.userName}>{user.displayName}</div>
+        </div>
+      </div>
+    </button>
+  )}
         </div>
         <br />
 
@@ -372,11 +465,14 @@ export default function MapPage() {
         <div id="map" className={styles.mapContainer}></div>
         <div className={styles.createdBy}>Created by Zak Brindle</div>
 
-        {user && (
+        {user && userData && (
           <div className={styles.userDetails}>
             <p>User ID: {user.uid}</p>
             <p>Name: {user.displayName}</p>
             <p>Email: {user.email}</p>
+            <p>Has Van: {userData.hasVan ? "Yes" : "No"}</p>
+            <p>Van Name: {userData.vanName}</p>
+            <p>Location: {userData.location.latitude}, {userData.location.longitude}</p>
           </div>
         )}
       </div>

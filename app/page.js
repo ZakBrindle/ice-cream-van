@@ -9,7 +9,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
- // firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('./firebaseConfig.js').then(module => module.default);
 }
@@ -59,6 +59,7 @@ export default function Home() {
         <img src="https://i.imgur.com/SvGSF6I.png" alt="Logo" className={styles.loginPageLogo} />
         <h2>Ice Cream Van</h2>
         <br />
+        
         <input type="text" id="username" placeholder="Username" className={styles.inputField} />
         <input type="password" id="password" placeholder="Password" className={styles.inputField} />
         <button onClick={login} className={styles.loginButton} style={{ backgroundColor: 'grey' }} disabled>Login</button>
@@ -73,13 +74,13 @@ export default function Home() {
 
 function login() {
   // ... (Authentication logic)
-  window.location.href = "/app";
+  window.location.href = "/welcome";
 }
 
 
 async function guestLogin() {
   try {
-    window.location.href = "/welcome";
+    window.location.href = "/map";
   } catch (error) {
     console.error("Error signing in anonymously:", error);
   }
