@@ -7,11 +7,15 @@ import Head from "next/head";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore"; 
+import { 
+  getDoc, // Import getDoc
+  updateDoc // Import updateDoc
+} from "firebase/firestore"; 
 
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -29,17 +33,53 @@ export default function WelcomePage() {
   
 
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+
+        // Check if the user record exists
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) { 
+          // Create a new user record if it doesn't exist
+          console.log("Account does not exist, create account!!");
+          try {
+            const userData = {
+              userID: currentUser.uid,
+              displayName: currentUser.displayName,
+              email: currentUser.email,
+              profilePicture: selectedProfilePicture,
+              vanIcon: selectedVanIcon, 
+              vanName: vanName, // Default empty van name
+              isVan: hasVan, // Default to not having a van
+            };
+
+            await setDoc(userDocRef, userData);
+          } catch (error) {
+            console.error("Error creating user document:", error);
+            alert("Error saving data. Please try again.");
+          }
+        } else {
+          // If the user document exists, you might want to 
+          // pre-fill the form with existing data (optional):
+          console.log("Account already exists!!");
+          const userData = userDoc.data();
+          setSelectedProfilePicture(userData.profilePicture);
+          setSelectedVanIcon(userData.vanIcon);
+          setVanName(userData.vanName);
+          setHasVan(userData.isVan);
+        }
+
       } else {
-        // Redirect to login if not logged in
         window.location.href = "/"; 
       }
     });
 
     return () => unsubscribeAuth();
   }, []);
+
+    
 
   const handleProfilePictureClick = (index) => {
     setSelectedProfilePicture(index);
@@ -64,23 +104,25 @@ export default function WelcomePage() {
         return;
       }
 
+      const userDocRef = doc(db, "users", user.uid);
+
       const userData = {
         userID: user.uid,
+        displayName: user.displayName, // Add displayName
+        email: user.email,           // Add email
         profilePicture: selectedProfilePicture,
         hasVan: hasVan,
         vanName: vanName,
         vanIcon: selectedVanIcon,
-        // Add other user data here, like location if needed
+        location: new GeoPoint(0, 0), // Add the location field
       };
 
-      await setDoc(doc(db, "users", user.uid), userData);
+      await updateDoc(userDocRef, userData); // Use updateDoc to update
 
-      // Redirect to the map page after successful submission
       window.location.href = "/map"; 
     } catch (error) {
-      console.error("Error writing user data to Firestore:", error);
+      console.error("Error updating user data:", error);
       alert("Error saving data. Please try again.");
-      window.location.href = "/map"; 
     }
   };
 
@@ -92,7 +134,9 @@ export default function WelcomePage() {
       </Head>
 
       <div className={styles.loginPage}>
-        <h2>Welcome!</h2>
+      {user && (
+        <h2>Welcome {user.displayName.split(' ')[0]}!</h2>
+      )}
 
          {/* Large Profile Picture */}
          <img
@@ -157,6 +201,15 @@ export default function WelcomePage() {
           Save
         </button>
       </div>
+
+      <br/>
+      {user && (
+          <div className={styles.userDetails}>
+            <p>User ID: {user.uid}</p>
+            <p>Name: {user.displayName}</p>
+            <p>Email: {user.email}</p>
+          </div>
+        )}
     </div>
   );
 }
