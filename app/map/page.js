@@ -10,10 +10,9 @@ import 'leaflet/dist/leaflet.css';
 
 let firebaseConfig;
 
-//typeof window !== 'undefined' && window.location.hostname.includes('localhost')
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
- // firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -35,7 +34,7 @@ export default function MapPage() {
   const [bannerType, setBannerType] = useState(null);
   const [isGuest, setIsGuest] = useState(false);
 
-  const [currentLocation, setCurrentLocation] = useState(null); 
+  const [currentLocation, setCurrentLocation] = useState(null);
   const [map, setMap] = useState(null);
   const [myLocationCircle, setMyLocationCircle] = useState(null);
 
@@ -72,7 +71,7 @@ export default function MapPage() {
   // Function to update the map with the current location
   const updateMapLocation = () => {
     if (map && currentLocation) {
-      map.setView(currentLocation, 13); 
+      map.setView(currentLocation, 13);
 
       if (myLocationCircle) {
         // Move the existing circle to the new location
@@ -92,7 +91,7 @@ export default function MapPage() {
 
   // Get location on button click
   const manuallyGetLocation = () => {
-    getCurrentLocation(); 
+    getCurrentLocation();
   };
 
 
@@ -128,7 +127,7 @@ export default function MapPage() {
         setBannerType('sticky');
       } else {
         setIsGuest(false);
-        setBannerMessage(''); 
+        setBannerMessage('');
         setBannerType('');
       }
     });
@@ -136,12 +135,12 @@ export default function MapPage() {
     return () => {
       clearTimeout(timer);
       clearTimeout(timer_short);
-      unsubscribeAuth(); 
+      unsubscribeAuth();
     };
 
     async function initMap() {
       console.log("CREATING MAP");
-      const L = await import("leaflet"); 
+      const L = await import("leaflet");
 
       const myIcon = L.icon({
         iconUrl: './images/van.png',
@@ -158,14 +157,14 @@ export default function MapPage() {
       });
 
       // CREATE THE MAP - use currentLocation if available, otherwise [0, 0]
-      const map = L.map("map").setView(currentLocation || [0, 0], 13); 
+      const map = L.map("map").setView(currentLocation || [0, 0], 13);
       setMap(map);
 
-    
+
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);  
+      }).addTo(map);
 
 
       async function fetchUserData() {
@@ -203,7 +202,7 @@ export default function MapPage() {
               console.log("CREATING VAN ON MAP: Lat (" + user.latitude + ") Long (" + user.longitude + ")");
 
               // Use user.uid to identify the current user's van
-              if (user.userID === auth.currentUser.uid) { 
+              if (user.userID === auth.currentUser.uid) {
                 L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
               } else {
                 L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
@@ -228,7 +227,7 @@ export default function MapPage() {
   // Update map whenever the currentLocation changes
   useEffect(() => {
     updateMapLocation();
-  }, [currentLocation, map]); 
+  }, [currentLocation, map]);
 
   const toggleSettings = () => {
     const settingsPanel = document.getElementById("settingsPanel");
@@ -251,7 +250,7 @@ export default function MapPage() {
 
       // Use user.uid to get the user's ID
       if (user && user.uid) {
-        const userDocRef = doc(db, 'users', user.uid); 
+        const userDocRef = doc(db, 'users', user.uid);
 
         await updateDoc(userDocRef, {
           active: !isLocationOn,
@@ -296,6 +295,11 @@ export default function MapPage() {
   }, [bannerMessage, bannerType]);
 
 
+  const goToWelcome = () => {
+    window.location.href = "/welcome";
+  };
+
+
   return (
     <>
       <Head>
@@ -332,32 +336,34 @@ export default function MapPage() {
             onClick={toggleSettings}
           />
 
-          {user && ( 
-            <div className={styles.loginDetailsContainer}>
-              <div className={styles.loggedInAs}>Logged in as:</div>
-              <div className={styles.userName}>{user.displayName}</div>
-            </div>
+          {user && (
+            <button className={styles.userNameButton} onClick={goToWelcome}>
+              <div className={styles.loginDetailsContainer}>
+                <div className={styles.loggedInAs}>Logged in as:</div>
+                <div className={styles.userName}>{user.displayName}</div>
+              </div>
+            </button>
           )}
         </div>
-        <br/>
+        <br />
 
         <div id="settingsPanel" style={{ display: "none" }}>
-         
-           
-            <button onClick={getMyLocation} className={styles.settingsButton}>Get Location</button>  
-       
-            {isOwner && (
-              <button onClick={toggleLocation} className={styles.settingsButton}>
-                {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-              </button>
-            )}
 
-            {isOwner && (
-              <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button>
-            )}
 
-            <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
-          
+          <button onClick={getMyLocation} className={styles.settingsButton}>Get Location</button>
+
+          {isOwner && (
+            <button onClick={toggleLocation} className={styles.settingsButton}>
+              {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+            </button>
+          )}
+
+          {isOwner && (
+            <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button>
+          )}
+
+          <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
+
 
           <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
           </div>
@@ -366,7 +372,7 @@ export default function MapPage() {
         <div id="map" className={styles.mapContainer}></div>
         <div className={styles.createdBy}>Created by Zak Brindle</div>
 
-        {user && ( 
+        {user && (
           <div className={styles.userDetails}>
             <p>User ID: {user.uid}</p>
             <p>Name: {user.displayName}</p>

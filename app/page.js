@@ -9,7 +9,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('./firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('./firebaseConfig.js').then(module => module.default);
 }
@@ -29,7 +29,7 @@ export default function Home() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user);
-      window.location.href = "/map";
+      window.location.href = "/welcome";
       // You can access user.uid, user.displayName, user.email, etc.
 
       // TODO: Store user data in your database or state management solution
@@ -79,7 +79,7 @@ function login() {
 
 async function guestLogin() {
   try {
-    window.location.href = "/map";
+    window.location.href = "/welcome";
   } catch (error) {
     console.error("Error signing in anonymously:", error);
   }
