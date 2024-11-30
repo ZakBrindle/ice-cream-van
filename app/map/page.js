@@ -261,8 +261,9 @@ L.control.locationpin = function (opts) {  // Create a factory function
   return new L.Control.LocationPin(opts);
 };
 
+if (typeof window !== 'undefined') {
 L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
-
+}
 
 
 
