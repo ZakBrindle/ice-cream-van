@@ -139,7 +139,9 @@ export default function MapPage() {
     // Initialize map after X seconds
    
     const timer_short = setTimeout(() => {   
-        initMap();           
+      if (typeof window !== 'undefined') { 
+        initMap();
+      }         
     }, 3000);
         
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
@@ -212,8 +214,6 @@ export default function MapPage() {
       const L = await import("leaflet");
 
 
-
-      
      
 
       const myIcon_me = L.icon({
@@ -241,6 +241,32 @@ export default function MapPage() {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);  
    
+
+
+
+      /*
+  // ADD GET LOCATION PIN
+  if (typeof window !== 'undefined') {
+    L.Control.LocationPin = L.Control.extend({  
+      onAdd: function (map) {
+        const div = L.DomUtil.create('div', 'location-pin-button');
+        div.innerHTML = `<img src="./images/locationPin_button.png" alt="Get Location" />`;
+        div.onclick = manuallyGetLocation;
+        return div;
+      },
+      onRemove: function (map) {
+        // Nothing to do here
+      }
+    });
+
+    L.control.locationpin = function (opts) {  
+      return new L.Control.LocationPin(opts);
+    };
+
+    L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
+  }
+      */
+
 
 
       async function fetchUserData() {
