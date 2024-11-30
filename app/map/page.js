@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css';
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
- firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+ //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -51,7 +51,7 @@ export default function MapPage() {
   const circle_radius = 1500;
 
   let circleSpawned = false;
-  var loggedInBannerShown = false;
+  const [loggedInBannerShown, setLoggedInBannerShown] = useState(false);
 
 
   // Function to get the current location
@@ -178,11 +178,10 @@ export default function MapPage() {
             window.location.href = "/welcome";
           }
 
-          if(!loggedInBannerShown)
-          {
+          if (!loggedInBannerShown) {
             setBannerMessage("Logged in as " + userDoc.data().displayName);
             setBannerType('timed');
-           loggedInBannerShown = true; 
+            setLoggedInBannerShown(true); 
           }
 
           // Check conditions for setting isLocationOn
