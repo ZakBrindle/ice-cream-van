@@ -148,18 +148,35 @@ export default function MapPage() {
         setUser(currentUser);
       }
 
+
+
+      try {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+       
+  
+        if (!userDoc.exists()) {
+          console.log("Account does not exist, create account!!");
+          window.location.href = "/welcome";
+        } 
+      }
+        catch (error) {
+          console.log("Error checking/creating user document:", error);
+          alert("Error checking/saving data. Please try again.");
+        }
+
       try {
         const userDocRef = doc(db, "users", currentUser.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
           setUserData(userDoc.data()); 
-
            // Redirect if firstLogin is true
            if (userDoc.data().firstLogin) {
             window.location.href = "/welcome";
           }
-          
+
+                   
           setBannerMessage("Logged in as " + userDoc.data().displayName);
           setBannerType('timed');
 
