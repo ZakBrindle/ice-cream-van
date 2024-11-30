@@ -366,19 +366,14 @@ export default function MapPage() {
     updateMapLocation();
   }, [currentLocation, map]);
 
-  const toggleSettings = () => {
-    const settingsPanel = document.getElementById("settingsPanel");
-    settingsPanel.style.display =
-      settingsPanel.style.display === "none" ? "block" : "none";
-  };
+ 
 
   const updateMyRoute = () => {
     // ... (Implementation for updating route)
   };
 
   const getMyLocation = () => {
-    manuallyGetLocation();
-    toggleSettings();
+    manuallyGetLocation();    
   };
 
 
