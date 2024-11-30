@@ -360,23 +360,16 @@ export default function MapPage() {
         console.log("Updated database to " + !isLocationOn);
 
         // 1. Update userData in state
-        setUserData({ ...userData, active: !isLocationOn });
-
-        // 1.2 Update the van icon based on location toggle
-        if (!isLocationOn) { // If location is now ON
-          setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
-        } else { // If location is now OFF
-          setToggleVanIcon("./images/van-grey.png");
-        }
+        setUserData({ ...userData, active: !isLocationOn }); 
 
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
-
+          toggleSettings();
           try {
             const usersRef = collection(db, 'users');
             const querySnapshot = await getDocs(usersRef);
             const vans = [];
-
+  
             querySnapshot.forEach((doc) => {
               const userData = doc.data();
               const user = {
@@ -389,24 +382,24 @@ export default function MapPage() {
                 isVan: userData.isVan,
                 vanIcon: userData.vanIcon,
                 hasVan: userData.hasVan
-              };
-
+              };  
+              
               if (user.hasVan && user.active) {
                 vans.push(user);
               }
             });
-
+  
             map.eachLayer((layer) => {
               if (layer instanceof L.Marker) {
                 map.removeLayer(layer);
               }
-            });
-            console.log("ONE TIME FETCH: Vans:", vans);
-
+            });  
+            console.log("ONE TIME FETCH: Vans:", vans);          
+            
             vans.forEach((user) => {
-              if (user.active) {
+              if (user.active) {    
                 //if (user.userID === auth.currentUser.uid) {  
-
+                
                 const myIcon2 = L.icon({
                   iconUrl: './images/vans/' + user.vanIcon + '.png',
                   iconSize: [50, 50],
@@ -414,13 +407,13 @@ export default function MapPage() {
                   popupAnchor: [-3, -46]
                 });
 
-                L.marker([user.latitude, user.longitude], { icon: myIcon2 }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
+                  L.marker([user.latitude, user.longitude], { icon: myIcon2 }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);    
               }
             });
           } catch (error) {
             console.error("Error fetching van data:", error);
           }
-        }
+        }  
         fetchUserData_onTimeFetch();
 
 
@@ -431,10 +424,12 @@ export default function MapPage() {
         setBannerType('timed');
       }
 
-      if (!isLocationOn) {
+      if(!isLocationOn)
+      {
         setBannerMessage("Live location turned on");
       }
-      else {
+      else
+      {
         setBannerMessage("Live location turned off");
       }
       setBannerType('timed');
