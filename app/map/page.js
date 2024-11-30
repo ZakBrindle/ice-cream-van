@@ -6,11 +6,12 @@ import styles from "../page.module.css";
 import Head from "next/head";
 
 import 'leaflet/dist/leaflet.css';
+import * as L from 'leaflet';
 
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+ // firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -41,7 +42,7 @@ export default function MapPage() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [map, setMap] = useState(null);
   const [myLocationCircle, setMyLocationCircle] = useState(null);
-
+  const [toggleVanIcon, setToggleVanIcon] = useState("./images/van-grey.png"); 
 
   const cicle_Color = '#CD506D';
   const circle_fillColor = '#75ac9f';
@@ -214,6 +215,9 @@ export default function MapPage() {
       console.log("CREATING MAP");
       const L = await import("leaflet");
 
+
+
+      
      
 
       const myIcon_me = L.icon({
@@ -231,12 +235,39 @@ export default function MapPage() {
         popupAnchor: [-3, -46]
       });
 
+    
+      try { // try create map, catch errors
+
       const map = L.map("map").setView(currentLocation || [0, 0], 13);
       setMap(map);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
+    
+   
+
+
+// ADD GET LOCATION PIN
+L.Control.LocationPin = L.Control.extend({  // Create a custom control class
+  onAdd: function (map) {
+    const div = L.DomUtil.create('div', 'location-pin-button');
+    div.innerHTML = `<img src="./images/locationPin_button.png" alt="Get Location" />`;
+    div.onclick = manuallyGetLocation;
+    return div;
+  },
+  onRemove: function (map) {
+    // Nothing to do here
+  }
+});
+
+L.control.locationpin = function (opts) {  // Create a factory function
+  return new L.Control.LocationPin(opts);
+};
+
+L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
+
+
 
 
       async function fetchUserData() {
@@ -307,9 +338,12 @@ export default function MapPage() {
           console.error("Error fetching van data:", error);
         }
       }
-
+      
       fetchUserData();
       setInterval(fetchUserData, 60 * 1000);
+    } catch (error) {
+      console.log("Error: " + error);
+    }
 
       updateLocationOnDatabase(); 
       const intervalId = setInterval(updateLocationOnDatabase, 60 * 1000);
@@ -362,9 +396,16 @@ export default function MapPage() {
         // 1. Update userData in state
         setUserData({ ...userData, active: !isLocationOn }); 
 
+         // 1.2 Update the van icon based on location toggle
+      if (!isLocationOn) { // If location is now ON
+        setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`); 
+      } else { // If location is now OFF
+        setToggleVanIcon("./images/van-grey.png");
+      }
+
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
-          toggleSettings();
+
           try {
             const usersRef = collection(db, 'users');
             const querySnapshot = await getDocs(usersRef);
@@ -506,11 +547,27 @@ export default function MapPage() {
       <div className={styles.app}>
         <div className={styles.topBar}>
           <img
-            src="./images/settings.png"
-            alt="Settings"
-            className={styles.settingsIcon}
-            onClick={toggleSettings}
+            src={toggleVanIcon} 
+            alt="Van Icon" 
+            className={styles.toggleVanIcon}           
           />
+          
+
+{user && userData && userData.hasVan && (
+  <div className={styles.toggleContainer}> 
+    <label className={styles.switch}>
+      <input 
+        type="checkbox" 
+        checked={isLocationOn} 
+        onChange={toggleLocation} 
+      />
+      <span className={styles.slider}></span>
+    </label>
+    <span className={styles.toggleLabel}> 
+      {isLocationOn ? "" : ""} 
+    </span>
+  </div>
+)}
 
           {user && userData && (
             <button className={styles.userNameButton} onClick={goToWelcome}>
@@ -530,20 +587,12 @@ export default function MapPage() {
         </div>
         <br />
 
-        <div id="settingsPanel" style={{ display: "none" }}>
-          <button onClick={getMyLocation} className={styles.settingsButton}>Get Location</button>
-
-          {user && userData && userData.hasVan && ( 
-            <button onClick={toggleLocation} className={styles.settingsButton}>
-              {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-            </button>
-          )}
-
+        <div id="settingsPanel" style={{ display: "none" }}>         
+        
           {/* Removed isOwner check here */}
           <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button> 
 
-          <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
-          <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
+         <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
           </div>
         </div>
 

@@ -32,6 +32,8 @@ export default function WelcomePage() {
   const [selectedVanIcon, setSelectedVanIcon] = useState(1);
   const [userData, setUserData] = useState(null);
   const [showAccountDetails, setshowAccountDetails] = useState(false); // State to control visibility
+ 
+
 
   const hasVanRef = useRef(null);
 
