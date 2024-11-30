@@ -15,7 +15,7 @@ import {
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
- // firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -30,6 +30,8 @@ export default function WelcomePage() {
   const [hasVan, setHasVan] = useState(false);
   const [vanName, setVanName] = useState("");
   const [selectedVanIcon, setSelectedVanIcon] = useState(1);
+  const [userData, setUserData] = useState(null);
+  const [showAccountDetails, setshowAccountDetails] = useState(false); // State to control visibility
 
   const hasVanRef = useRef(null);
 
@@ -56,6 +58,7 @@ export default function WelcomePage() {
           profilePicture: selectedProfilePicture,
           vanIcon: selectedVanIcon,
           vanName: vanName,
+          firstLogin: true,
           isVan: hasVan,
           location: new GeoPoint(0, 0), // Add location field here
         };
@@ -93,7 +96,7 @@ export default function WelcomePage() {
       }
 
     } catch (error) {
-      console.error("Error checking/creating user document:", error);
+      console.log("Error checking/creating user document:", error);
       alert("Error checking/saving data. Please try again.");
     }
 
@@ -123,6 +126,10 @@ const handleVanIconClick = (index) => {
   setSelectedVanIcon(index);
 };
 
+const backToMap = (index) => {
+  window.location.href = "/map";
+};
+
 const handleSubmit = async () => {
   try {
     if (hasVan && vanName.trim() === "") {
@@ -141,6 +148,7 @@ const handleSubmit = async () => {
       vanName: vanName,
       vanIcon: selectedVanIcon,
       active: false,
+      firstLogin: false,
       location: new GeoPoint(0, 0), // Add the location field
     };
 
@@ -148,7 +156,7 @@ const handleSubmit = async () => {
 
     window.location.href = "/map";
   } catch (error) {
-    console.error("Error updating user data:", error);
+    console.log("Error updating user data:", error);
     alert("Error saving data. Please try again.");
   }
 };
@@ -195,12 +203,13 @@ return (
           checked={hasVan}
           onChange={handleVanCheckboxChange}
         />
-        <label htmlFor="hasVan"> I have an ice cream van</label>
+        <label htmlFor="hasVan"> I deliver ice cream to the people</label>
       </div>
 
 
       {hasVan && (
         <div>
+          <label style={{ fontSize: '12px' }} htmlFor="hasVan">Van Details</label>
           <input
             type="text"
             id="vanName"
@@ -209,6 +218,7 @@ return (
             value={vanName}
             onChange={handleVanNameChange}
           />
+<br/>
 
           <div className={styles.vanIconContainer}>
             {[1, 2, 3, 4].map((index) => (
@@ -224,20 +234,36 @@ return (
           </div>
         </div>
       )}
+         <br />
+
+{(user && showAccountDetails) && (
+      <div onClick={() => setshowAccountDetails(!showAccountDetails)} className={styles.userDetails}>        
+        <p>User ID: {user.uid}</p>
+        <p>Name: {user.displayName}</p>
+        <p>Email: {user.email}</p>
+      </div>
+    )}
+    <br />
+
+    {(user && !showAccountDetails) && (
+    <button onClick={() => setshowAccountDetails(!showAccountDetails)} className={styles.loginButton}>
+        Account Details
+      </button>
+    )}
+
+      {!userData?.firstLogin && ( 
+      <button onClick={backToMap} className={styles.loginButton}>
+        Back to Map
+      </button>
+      )}
 
       <button onClick={handleSubmit} className={styles.loginButton}>
         Save
       </button>
     </div>
 
-    <br />
-    {user && (
-      <div className={styles.userDetails}>
-        <p>User ID: {user.uid}</p>
-        <p>Name: {user.displayName}</p>
-        <p>Email: {user.email}</p>
-      </div>
-    )}
+    
+    
   </div>
 );
 }
