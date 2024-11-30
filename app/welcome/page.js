@@ -249,7 +249,10 @@ return (
         </div>
       )}
          <br />
-
+         <button onClick={handleSubmit} className={styles.loginButton}>
+        Save
+      </button>
+         <hr className={styles.separator} /> {/* Separator line */}
 {(user && showAccountDetails) && (
       <div onClick={() => setshowAccountDetails(!showAccountDetails)} className={styles.userDetails}>        
         <p>User ID: {user.uid}</p>
@@ -258,7 +261,7 @@ return (
       </div>
     )}
    
-    <hr className={styles.separator} /> {/* Separator line */}
+   
     {(user && !showAccountDetails) && (
     <button onClick={() => setshowAccountDetails(!showAccountDetails)} className={styles.loginButton}>
         Account Details
@@ -271,11 +274,9 @@ return (
       </button>
       )}
 
-      <button onClick={handleSubmit} className={styles.loginButton}>
-        Save
-      </button>
-      <hr className={styles.separator} /> {/* Separator line */}
-      <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
+     
+     
+      <button onClick={logout} className={styles.loginButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
     
     </div>
 
