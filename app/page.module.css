@@ -6,7 +6,7 @@
   height: 100vh; 
   background-color: #80B8AB; 
   margin: 0; 
-  padding-bottom: 100px; /* Add space for the settings panel */
+  padding-bottom: 40px; /* Add space for the settings panel */
 }
 
 /* PC "phone emulator" look */
@@ -110,11 +110,11 @@
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 20px 13px;
-  background-color: #80B8AB;
-  width: 80%;
+  background-color: #638f85;
+  width: 93%;
   flex-direction: row; /* Restored to default row direction */
   border-radius: 30px;
+  margin-bottom: -15px;
 }
 
 .userName {
@@ -138,43 +138,13 @@
 
 .map {
   width: 100%;
-  height: calc(100% -20px); /* Reduced map height    - 50px */
+  height: calc(100% -15px); /* Reduced map height    - 50px */
   margin-top: 0px; /* Added margin to push map down */
   border-radius: 30px;
 }
 
 
-.settingsIcon {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  margin-right: 40px;
-  margin-left: -20px;
-}
 
-
-#settingsPanel {
-  width: 100%; 
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centers horizontally */
-  justify-content: center; /* Centers vertically */
-  position: absolute; 
-  bottom: 0; 
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
-  max-width: 100%; 
-   margin-bottom: 100px;  
-   padding-bottom: 100px; 
-  
-}
-
-
-.settingsPanelRow {
-  display: flex; 
-  justify-content: space-between; /* Distribute space between buttons */
-}
 
 
 

@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css';
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+ firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -355,11 +355,7 @@ export default function MapPage() {
     updateMapLocation();
   }, [currentLocation, map]);
 
-  const toggleSettings = () => {
-    const settingsPanel = document.getElementById("settingsPanel");
-    settingsPanel.style.display =
-      settingsPanel.style.display === "none" ? "block" : "none";
-  };
+
 
   const updateMyRoute = () => {
     // ... (Implementation for updating route)
@@ -386,14 +382,7 @@ export default function MapPage() {
         console.log("Updated database to " + !isLocationOn);
 
         // 1. Update userData in state
-        setUserData({ ...userData, active: !isLocationOn });
-
-        // 1.2 Update the van icon based on location toggle
-        if (!isLocationOn) { // If location is now ON
-          setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
-        } else { // If location is now OFF
-          setToggleVanIcon("./images/van-grey.png");
-        }
+        setUserData({ ...userData, active: !isLocationOn });        
 
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
@@ -449,6 +438,13 @@ export default function MapPage() {
         }
         fetchUserData_onTimeFetch();
 
+
+        // 1.2 Update the van icon based on location toggle
+        if (!isLocationOn) { // If location is now ON
+          setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
+        } else { // If location is now OFF
+          setToggleVanIcon("./images/van-grey.png");
+        }
 
 
       } else {
@@ -578,17 +574,7 @@ export default function MapPage() {
         </div>
         <br />
 
-        <div id="settingsPanel" style={{ display: "none" }}>
-
-          {user && userData && userData.hasVan && (
-            <button onClick={toggleLocation} className={styles.settingsButton}>
-              {isLocationOn ? "Turn Off Location" : "Turn On Location"}
-            </button>
-          )}
-
-          <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
-          </div>
-        </div>
+       
 
         <div id="map" className={styles.mapContainer}></div>
         <div
