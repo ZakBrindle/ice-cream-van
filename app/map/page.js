@@ -30,7 +30,7 @@ import { auth } from "../page"; // Import auth from page.js
 
 export default function MapPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLocationOn, setIsLocationOn] = useState(false); 
+  const [isLocationOn, setIsLocationOn] = useState(false);
   const [user, setUser] = useState(null);
   const [bannerMessage, setBannerMessage] = useState(null);
   const [bannerType, setBannerType] = useState(null);
@@ -90,7 +90,7 @@ export default function MapPage() {
           fillOpacity: circle_fillOpacity,
           radius: circle_radius
         }).addTo(map);
-        setMyLocationCircle(newCircle); 
+        setMyLocationCircle(newCircle);
       }
     }
   };
@@ -108,10 +108,10 @@ export default function MapPage() {
       const userDocRef = doc(db, "users", user.uid);
 
       const userData = {
-        location: new GeoPoint(currentLocation[0], currentLocation[1]), 
+        location: new GeoPoint(currentLocation[0], currentLocation[1]),
       };
 
-      await updateDoc(userDocRef, userData); 
+      await updateDoc(userDocRef, userData);
       console.log("Location saved to database:" + currentLocation);
     } catch (error) {
       console.error("Error updating user data:", error);
@@ -153,30 +153,30 @@ export default function MapPage() {
       try {
         const userDocRef = doc(db, "users", currentUser.uid);
         const userDoc = await getDoc(userDocRef);
-       
-  
+
+
         if (!userDoc.exists()) {
           console.log("Account does not exist, create account!!");
           window.location.href = "/welcome";
-        } 
-      }
-        catch (error) {
-          console.log("Error checking/creating user document:", error);
-          alert("Error checking/saving data. Please try again.");
         }
+      }
+      catch (error) {
+        console.log("Error checking/creating user document:", error);
+        alert("Error checking/saving data. Please try again.");
+      }
 
       try {
         const userDocRef = doc(db, "users", currentUser.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          setUserData(userDoc.data()); 
-           // Redirect if firstLogin is true
-           if (userDoc.data().firstLogin) {
+          setUserData(userDoc.data());
+          // Redirect if firstLogin is true
+          if (userDoc.data().firstLogin) {
             window.location.href = "/welcome";
           }
 
-                   
+
           setBannerMessage("Logged in as " + userDoc.data().displayName);
           setBannerType('timed');
 
@@ -185,10 +185,9 @@ export default function MapPage() {
           if (userDoc.data().hasVan && userDoc.data().active) {
             setIsLocationOn(true);
           }
-        }        
-        else
-        {
-           window.location.href = "/welcome";
+        }
+        else {
+          window.location.href = "/welcome";
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -214,7 +213,7 @@ export default function MapPage() {
       console.log("CREATING MAP");
       const L = await import("leaflet");
 
-     
+
 
       const myIcon_me = L.icon({
         iconUrl: './images/van-me.png',
@@ -223,7 +222,7 @@ export default function MapPage() {
         popupAnchor: [-3, -46]
       });
 
-     
+
       const myIcon_bw = L.icon({
         iconUrl: './images/van-bw.png',
         iconSize: [50, 50],
@@ -239,8 +238,8 @@ export default function MapPage() {
       }).addTo(map);
 
 
-       // ADD GET LOCATION PIN
-       if (typeof window !== 'undefined') {
+      // ADD GET LOCATION PIN
+      if (typeof window !== 'undefined') {
         L.Control.LocationPin = L.Control.extend({
           onAdd: function (map) {
             const div = L.DomUtil.create('div', 'location-pin-button');
@@ -275,14 +274,14 @@ export default function MapPage() {
               latitude: userData.location._lat,
               userName: userData.vanName,
               active: userData.active,
-              userID: userData.userID,              
+              userID: userData.userID,
               firstLogin: userData.firstLogin,
-              isVan: userData.isVan,              
+              isVan: userData.isVan,
               vanIcon: userData.vanIcon,
               hasVan: userData.hasVan
             };
 
-           
+
 
             if (!user.active) {
               if (user.userID === user.uid) {
@@ -311,7 +310,7 @@ export default function MapPage() {
             if (user.active) {
               console.log("CREATING VAN ON MAP: Lat (" + user.latitude + ") Long (" + user.longitude + ")");
 
-              
+
               const myIcon = L.icon({
                 iconUrl: './images/vans/' + user.vanIcon + '.png',
                 iconSize: [50, 50],
@@ -319,11 +318,11 @@ export default function MapPage() {
                 popupAnchor: [-3, -46]
               });
 
-            //  if (user.userID === auth.currentUser.uid) {
-            //    L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
-             // } else {
-                L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
-             // }
+              //  if (user.userID === auth.currentUser.uid) {
+              //    L.marker([user.latitude, user.longitude], { icon: myIcon_me }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
+              // } else {
+              L.marker([user.latitude, user.longitude], { icon: myIcon }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
+              // }
             }
           });
         } catch (error) {
@@ -334,7 +333,7 @@ export default function MapPage() {
       fetchUserData();
       setInterval(fetchUserData, 60 * 1000);
 
-      updateLocationOnDatabase(); 
+      updateLocationOnDatabase();
       const intervalId = setInterval(updateLocationOnDatabase, 60 * 1000);
 
       return () => clearInterval(intervalId);
@@ -342,7 +341,7 @@ export default function MapPage() {
     }
   }, [currentLocation, user]);
 
-  
+
 
   useEffect(() => {
     getCurrentLocation();
@@ -383,7 +382,7 @@ export default function MapPage() {
         console.log("Updated database to " + !isLocationOn);
 
         // 1. Update userData in state
-        setUserData({ ...userData, active: !isLocationOn }); 
+        setUserData({ ...userData, active: !isLocationOn });
 
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
@@ -392,7 +391,7 @@ export default function MapPage() {
             const usersRef = collection(db, 'users');
             const querySnapshot = await getDocs(usersRef);
             const vans = [];
-  
+
             querySnapshot.forEach((doc) => {
               const userData = doc.data();
               const user = {
@@ -405,24 +404,24 @@ export default function MapPage() {
                 isVan: userData.isVan,
                 vanIcon: userData.vanIcon,
                 hasVan: userData.hasVan
-              };  
-              
+              };
+
               if (user.hasVan && user.active) {
                 vans.push(user);
               }
             });
-  
+
             map.eachLayer((layer) => {
               if (layer instanceof L.Marker) {
                 map.removeLayer(layer);
               }
-            });  
-            console.log("ONE TIME FETCH: Vans:", vans);          
-            
+            });
+            console.log("ONE TIME FETCH: Vans:", vans);
+
             vans.forEach((user) => {
-              if (user.active) {    
+              if (user.active) {
                 //if (user.userID === auth.currentUser.uid) {  
-                
+
                 const myIcon2 = L.icon({
                   iconUrl: './images/vans/' + user.vanIcon + '.png',
                   iconSize: [50, 50],
@@ -430,13 +429,13 @@ export default function MapPage() {
                   popupAnchor: [-3, -46]
                 });
 
-                  L.marker([user.latitude, user.longitude], { icon: myIcon2 }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);    
+                L.marker([user.latitude, user.longitude], { icon: myIcon2 }).addTo(map).bindPopup(`<b>${user.userName}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=$${user.latitude},${user.longitude}&travelmode=walking" target="_blank">Directions</a>`);
               }
             });
           } catch (error) {
             console.error("Error fetching van data:", error);
           }
-        }  
+        }
         fetchUserData_onTimeFetch();
 
 
@@ -447,12 +446,10 @@ export default function MapPage() {
         setBannerType('timed');
       }
 
-      if(!isLocationOn)
-      {
+      if (!isLocationOn) {
         setBannerMessage("Live location turned on");
       }
-      else
-      {
+      else {
         setBannerMessage("Live location turned off");
       }
       setBannerType('timed');
@@ -464,7 +461,7 @@ export default function MapPage() {
     }
   };
 
- 
+
 
   const logout = () => {
     auth.signOut()
@@ -528,31 +525,31 @@ export default function MapPage() {
 
       <div className={styles.app}>
         <div className={styles.topBar}>
-       
-      {user && userData && (
-        <img
-            src={toggleVanIcon}
-            alt="Van Icon"
-            className={styles.toggleVanIcon}
-          />
-
           {user && userData && userData.hasVan && (
-            <div className={styles.toggleContainer}>
-              <label className={styles.switch}>
-                <input
-                  type="checkbox"
-                  checked={isLocationOn}
-                  onChange={toggleLocation}
-                />
-                <span className={styles.slider}></span>
-              </label>
-              <span className={styles.toggleLabel}>
-                {isLocationOn ? "" : ""}
-              </span>
-            </div>
+            <> {/* Wrap the elements in a fragment */}
+              <img
+                src={toggleVanIcon}
+                alt="Van Icon"
+                className={styles.toggleVanIcon}
+              />
+
+              <div className={styles.toggleContainer}>
+                <label className={styles.switch}>
+                  <input
+                    type="checkbox"
+                    checked={isLocationOn}
+                    onChange={toggleLocation}
+                  />
+                  <span className={styles.slider}></span>
+                </label>
+                <span className={styles.toggleLabel}>
+                  {isLocationOn ? "" : ""}
+                </span>
+              </div>
+            </>
           )}
 
-        
+          {user && userData && (
             <button className={styles.userNameButton} onClick={goToWelcome}>
               <div className={styles.loginDetailsContainer}>
                 <img
@@ -560,7 +557,7 @@ export default function MapPage() {
                   alt="Profile Picture"
                   className={styles.profilePictureSmall}
                 />
-                <div> 
+                <div>
                   <div className={styles.loggedInAs}>Logged in as:</div>
                   <div className={styles.userName}>{user.displayName}</div>
                 </div>
@@ -570,21 +567,21 @@ export default function MapPage() {
         </div>
         <br />
 
-        <div id="settingsPanel" style={{ display: "none" }}>       
+        <div id="settingsPanel" style={{ display: "none" }}>
 
-          {user && userData && userData.hasVan && ( 
+          {user && userData && userData.hasVan && (
             <button onClick={toggleLocation} className={styles.settingsButton}>
               {isLocationOn ? "Turn Off Location" : "Turn On Location"}
             </button>
-          )}         
+          )}
 
           <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
           </div>
         </div>
 
         <div id="map" className={styles.mapContainer}></div>
-        <div 
-          className={styles.createdBy} 
+        <div
+          className={styles.createdBy}
           onClick={() => setShowUserDetails(!showUserDetails)} // Toggle visibility on click
         >
           Created by Zak Brindle
@@ -599,7 +596,7 @@ export default function MapPage() {
             <p>Van Name: {userData.vanName}</p>
             <p>Live Location: {userData.active ? "Yes" : "No"}</p>
 
-            <p>First Login: {userData ? (userData.firstLogin ? "Yes" : "No") : "Loading..."}</p> 
+            <p>First Login: {userData ? (userData.firstLogin ? "Yes" : "No") : "Loading..."}</p>
             <p>UID: {user.uid}</p>
           </div>
         )}
