@@ -98,7 +98,9 @@ export default function MapPage() {
 
   // Get location on button click
   const manuallyGetLocation = () => {
+    if (typeof window !== 'undefined') {
     getCurrentLocation();
+    }
   };
 
 
@@ -244,7 +246,7 @@ export default function MapPage() {
 
 
 
-      /*
+      
   // ADD GET LOCATION PIN
   if (typeof window !== 'undefined') {
     L.Control.LocationPin = L.Control.extend({  
@@ -265,7 +267,7 @@ export default function MapPage() {
 
     L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
   }
-      */
+      
 
 
 
@@ -355,7 +357,9 @@ export default function MapPage() {
   
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
     getCurrentLocation();
+    }
   }, []);
 
   useEffect(() => {
