@@ -592,15 +592,7 @@ export default function MapPage() {
           )}
         </div>
         <br />
-
-        <div id="settingsPanel" style={{ display: "none" }}>         
         
-          {/* Removed isOwner check here */}
-          <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button> 
-
-         <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
-          </div>
-        </div>
 
         <div id="map" className={styles.mapContainer}></div>
         <div 
