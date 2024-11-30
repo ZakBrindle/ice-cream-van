@@ -15,7 +15,7 @@ import {
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -130,6 +130,19 @@ const backToMap = (index) => {
   window.location.href = "/map";
 };
 
+const logout = () => {
+  auth.signOut()
+    .then(() => {
+      console.log("User signed out");
+      window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("Error signing out:", error);
+      setBannerMessage("Error signing out. Please try again.");
+      setBannerType('sticky');
+    });
+};
+
 const handleSubmit = async () => {
   try {
     if (hasVan && vanName.trim() === "") {
@@ -194,6 +207,7 @@ return (
         ))}
       </div>
 
+      <hr className={styles.separator} /> {/* Separator line */}
       {/* Ice Cream Van Section */}
       <div className={styles.iceCreamVanCheckbox}>
         <input
@@ -243,8 +257,8 @@ return (
         <p>Email: {user.email}</p>
       </div>
     )}
-    <br />
-
+   
+    <hr className={styles.separator} /> {/* Separator line */}
     {(user && !showAccountDetails) && (
     <button onClick={() => setshowAccountDetails(!showAccountDetails)} className={styles.loginButton}>
         Account Details
@@ -260,6 +274,9 @@ return (
       <button onClick={handleSubmit} className={styles.loginButton}>
         Save
       </button>
+      <hr className={styles.separator} /> {/* Separator line */}
+      <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
+    
     </div>
 
     
