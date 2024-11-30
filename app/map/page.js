@@ -239,33 +239,8 @@ export default function MapPage() {
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
-    
+      }).addTo(map);  
    
-
-
-// ADD GET LOCATION PIN
-useEffect(() => {
-  async function createLocationPin() {
-    if (typeof window !== 'undefined') {
-      const { default: L } = await import('leaflet'); // Dynamically import Leaflet
-
-      // Define L.Control.LocationPin here (the code from before)
-      L.Control.LocationPin = L.Control.extend({ 
-        // ... (your L.Control.LocationPin code) ...
-      }); 
-
-      L.control.locationpin = function(opts) {
-        return new L.Control.LocationPin(opts);
-      }
-
-      L.control.locationpin({ position: 'bottomleft' }).addTo(map);
-    }
-  }
-
-  createLocationPin();
-}, []);
-
 
 
       async function fetchUserData() {
