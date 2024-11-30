@@ -185,7 +185,7 @@ export default function MapPage() {
             setIsLocationOn(true);
 
             if (!loggedInBannerShown) {
-              setBannerMessage("😎 Location will update automatically if you have the app open");
+              setBannerMessage("😎 Live location while app is open");
               setBannerType('timed');
               setLoggedInBannerShown(true); 
             }
@@ -441,7 +441,7 @@ export default function MapPage() {
 
 
         // 1.2 Update the van icon based on location toggle
-        if (!isLocationOn) { // If location is now ON
+        if (isLocationOn) { // If location is now ON
           setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
         } else { // If location is now OFF
           setToggleVanIcon("./images/van-grey.png");
@@ -455,11 +455,11 @@ export default function MapPage() {
       }
 
       if (!isLocationOn) {
-        setBannerMessage("😎 Location will update automatically if you have the app open");
+        setBannerMessage("😎 Live location while app is open 📍");
         
       }
       else {
-        setBannerMessage("🍦 Hiding all the ice cream for myself");
+        setBannerMessage("🍦 Hiding all the ice cream for myself 🍧");
       }
       setBannerType('timed');
 
