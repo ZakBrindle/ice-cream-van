@@ -41,6 +41,8 @@ export default function MapPage() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [map, setMap] = useState(null);
   const [myLocationCircle, setMyLocationCircle] = useState(null);
+  
+  const [toggleVanIcon, setToggleVanIcon] = useState("./images/van-grey.png");
 
 
   const cicle_Color = '#CD506D';
@@ -384,9 +386,16 @@ export default function MapPage() {
         // 1. Update userData in state
         setUserData({ ...userData, active: !isLocationOn });
 
+        // 1.2 Update the van icon based on location toggle
+        if (!isLocationOn) { // If location is now ON
+          setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
+        } else { // If location is now OFF
+          setToggleVanIcon("./images/van-grey.png");
+        }
+
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
-          toggleSettings();
+
           try {
             const usersRef = collection(db, 'users');
             const querySnapshot = await getDocs(usersRef);
