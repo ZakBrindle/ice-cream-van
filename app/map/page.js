@@ -174,7 +174,9 @@ export default function MapPage() {
           setUserData(userDoc.data()); 
            // Redirect if firstLogin is true
            if (userDoc.data().firstLogin) {
+            if (typeof window !== 'undefined') {
             window.location.href = "/welcome";
+            }
           }
 
                    
@@ -189,7 +191,9 @@ export default function MapPage() {
         }        
         else
         {
+          if (typeof window !== 'undefined') {
            window.location.href = "/welcome";
+          }
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -486,7 +490,9 @@ export default function MapPage() {
     auth.signOut()
       .then(() => {
         console.log("User signed out");
+        if (typeof window !== 'undefined') {
         window.location.href = "/";
+        }
       })
       .catch((error) => {
         console.error("Error signing out:", error);
@@ -513,7 +519,9 @@ export default function MapPage() {
 
 
   const goToWelcome = () => {
+    if (typeof window !== 'undefined') {
     window.location.href = "/welcome";
+    }
   };
 
   return (
