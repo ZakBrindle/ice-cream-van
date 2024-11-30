@@ -69,7 +69,7 @@ export default function Home() {
         <button onClick={login} className={styles.loginButton} style={{ backgroundColor: 'grey' }} disabled>Login</button>
         <hr className={styles.separator} /> {/* Separator line */}
         <button onClick={signInWithGoogle} className={styles.loginButton}>Sign in with Google</button>
-        <button onClick={guestLogin} className={styles.loginButton}>Sign in as Guest</button>
+        <button onClick={guestLogin} className={styles.loginButton} style={{ backgroundColor: 'grey' }} disabled>Sign in as Guest</button>
         <br />
       </div>
     </div>
