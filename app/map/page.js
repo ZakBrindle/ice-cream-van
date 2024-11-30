@@ -245,6 +245,7 @@ export default function MapPage() {
 
 
 // ADD GET LOCATION PIN
+if (typeof window !== 'undefined') {
 L.Control.LocationPin = L.Control.extend({  // Create a custom control class
   onAdd: function (map) {
     const div = L.DomUtil.create('div', 'location-pin-button');
@@ -261,7 +262,7 @@ L.control.locationpin = function (opts) {  // Create a factory function
   return new L.Control.LocationPin(opts);
 };
 
-if (typeof window !== 'undefined') {
+
 L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
 }
 
