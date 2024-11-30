@@ -189,6 +189,14 @@ export default function MapPage() {
               setBannerType('timed');
               setLoggedInBannerShown(true); 
             }
+
+
+             // 1.2 Update the van icon based on location toggle
+            if (userDoc.data().active) { // If location is now ON
+               setToggleVanIcon(`./images/vans/${userDoc.data().vanIcon}.png`);
+              } else { // If location is now OFF
+                setToggleVanIcon("./images/van-grey.png");
+              }
           }
         }
         else {
@@ -217,15 +225,6 @@ export default function MapPage() {
     async function initMap() {
       console.log("CREATING MAP");
       const L = await import("leaflet");
-
-
-
-      const myIcon_me = L.icon({
-        iconUrl: './images/van-me.png',
-        iconSize: [50, 50],
-        iconAnchor: [22, 50],
-        popupAnchor: [-3, -46]
-      });
 
 
       const myIcon_bw = L.icon({
@@ -261,7 +260,7 @@ export default function MapPage() {
           return new L.Control.LocationPin(opts);
         };
 
-        L.control.locationpin({ position: 'bottomleft' }).addTo(map);
+        L.control.locationpin({ position: 'topright' }).addTo(map);
       }
 
 
@@ -357,15 +356,6 @@ export default function MapPage() {
   }, [currentLocation, map]);
 
 
-
-  const updateMyRoute = () => {
-    // ... (Implementation for updating route)
-  };
-
-  const getMyLocation = () => {
-    manuallyGetLocation();
-    toggleSettings();
-  };
 
 
   const toggleLocation = async () => {
