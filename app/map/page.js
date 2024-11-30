@@ -441,7 +441,7 @@ export default function MapPage() {
 
 
         // 1.2 Update the van icon based on location toggle
-        if (isLocationOn) { // If location is now ON
+        if (userData.active) { // If location is now ON
           setToggleVanIcon(`./images/vans/${userData.vanIcon}.png`);
         } else { // If location is now OFF
           setToggleVanIcon("./images/van-grey.png");
