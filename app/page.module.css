@@ -107,7 +107,7 @@
 
 
 .topBar {
-  display: flex;
+  display: flex;  
   justify-content: space-between; 
   align-items: center;
   background-color: #80B8AB;
@@ -115,6 +115,11 @@
   flex-direction: row; /* Restored to default row direction */
   border-radius: 30px;
   margin-bottom: -15px;
+}
+
+.topBar .toggleSection { /* New class for the inner div */
+  display: flex;
+  align-items: center;
 }
 
 .userName {
