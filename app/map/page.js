@@ -10,11 +10,11 @@ import * as L from 'leaflet';
 
 let firebaseConfig;
 
-if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
+
  // firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
-} else {
+
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
-}
+
 
 
 import { doc, updateDoc } from "firebase/firestore";
@@ -124,6 +124,7 @@ export default function MapPage() {
 
   useEffect(() => {
 
+
     let myLocationCircle;
 
     const app = initializeApp(firebaseConfig);
@@ -137,12 +138,10 @@ export default function MapPage() {
 
     // Initialize map after X seconds
    
-    const timer_short = setTimeout(() => {
-             
+    const timer_short = setTimeout(() => {   
+        initMap();           
     }, 3000);
-    if (typeof window !== 'undefined') {
-      initMap();
-      }       
+        
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
