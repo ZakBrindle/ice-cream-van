@@ -344,25 +344,25 @@
 
 
 /*  LIVE LOCATION TOGGLE */
-.toggleVanIcon {
-  width: 70px;
-  height: 70px;
-  margin-left: -30px;
+.toggleContainer {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;   /* Center horizontally */
+  gap: 5px;              /* Adjust the gap as needed */
+  margin: 10px 0; 
 }
 
-.toggleContainer {
-  display: flex;    
-  align-items: center; /* Vertically align the toggle and label */
-  gap: 10px; /* Space between toggle and label */
-  margin: 10px 0; /* Spacing around the container */
-}
+.toggleVanIcon {
+  width: 55px;
+  height: 55px;
+  margin-left: 0; /* Remove the margin-left */ 
+} 
 
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;  
-  margin-left: -180px;
 }
 
 .switch input { 

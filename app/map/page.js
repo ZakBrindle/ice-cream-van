@@ -51,7 +51,7 @@ export default function MapPage() {
   const circle_radius = 1500;
 
   let circleSpawned = false;
-
+  var loggedInBannerShown = false;
 
 
   // Function to get the current location
@@ -178,10 +178,12 @@ export default function MapPage() {
             window.location.href = "/welcome";
           }
 
-
-          setBannerMessage("Logged in as " + userDoc.data().displayName);
-          setBannerType('timed');
-
+          if(!loggedInBannerShown)
+          {
+            setBannerMessage("Logged in as " + userDoc.data().displayName);
+            setBannerType('timed');
+           loggedInBannerShown = true; 
+          }
 
           // Check conditions for setting isLocationOn
           if (userDoc.data().hasVan && userDoc.data().active) {
