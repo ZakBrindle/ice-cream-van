@@ -557,23 +557,8 @@ export default function MapPage() {
             alt="Van Icon" 
             className={styles.toggleVanIcon}           
           />
-          
+        
 
-{user && userData && userData.hasVan && (
-  <div className={styles.toggleContainer}> 
-    <label className={styles.switch}>
-      <input 
-        type="checkbox" 
-        checked={isLocationOn} 
-        onChange={toggleLocation} 
-      />
-      <span className={styles.slider}></span>
-    </label>
-    <span className={styles.toggleLabel}> 
-      {isLocationOn ? "" : ""} 
-    </span>
-  </div>
-)}
 
           {user && userData && (
             <button className={styles.userNameButton} onClick={goToWelcome}>
