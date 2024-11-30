@@ -158,7 +158,7 @@ export default function MapPage() {
 
         if (!userDoc.exists()) {
           console.log("Account does not exist, create account!!");
-          //window.location.href = "/welcome";
+          window.location.href = "/welcome";
         }
       }
       catch (error) {
@@ -175,7 +175,7 @@ export default function MapPage() {
           // Redirect if firstLogin is true
           if (userDoc.data().firstLogin) {
             if (typeof window !== 'undefined') {
-             //window.location.href = "/welcome";
+             window.location.href = "/welcome";
             }
           }
 
@@ -191,7 +191,7 @@ export default function MapPage() {
         }
         else {
           if (typeof window !== 'undefined') {
-            //window.location.href = "/welcome";
+            window.location.href = "/welcome";
           }
         }
       } catch (error) {
@@ -237,9 +237,11 @@ export default function MapPage() {
       });
 
 
-      try { // try create map, catch errors
+    
 
+        if (typeof window !== 'undefined') {
         const map = L.map("map").setView(currentLocation || [0, 0], 13);
+        }
         setMap(map);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -345,9 +347,7 @@ export default function MapPage() {
 
         fetchUserData();
         setInterval(fetchUserData, 60 * 1000);
-      } catch (error) {
-        console.log("Error: " + error);
-      }
+     
 
       updateLocationOnDatabase();
       const intervalId = setInterval(updateLocationOnDatabase, 60 * 1000);
@@ -488,7 +488,7 @@ export default function MapPage() {
       .then(() => {
         console.log("User signed out");
         if (typeof window !== 'undefined') {
-          //window.location.href = "/";
+          window.location.href = "/";
         }
       })
       .catch((error) => {
@@ -517,7 +517,7 @@ export default function MapPage() {
 
   const goToWelcome = () => {
     if (typeof window !== 'undefined') {
-      //window.location.href = "/welcome";
+      window.location.href = "/welcome";
     }
   };
 
