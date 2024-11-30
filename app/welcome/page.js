@@ -219,7 +219,7 @@ return (
           checked={hasVan}
           onChange={handleVanCheckboxChange}
         />
-        <label htmlFor="hasVan"> I deliver ice cream to the people</label>
+        <label htmlFor="hasVan"> I'm the ice cream hero! 🍦</label>
       </div>
 
 
