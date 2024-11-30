@@ -245,26 +245,26 @@ export default function MapPage() {
 
 
 // ADD GET LOCATION PIN
-if (typeof window !== 'undefined') {
-L.Control.LocationPin = L.Control.extend({  // Create a custom control class
-  onAdd: function (map) {
-    const div = L.DomUtil.create('div', 'location-pin-button');
-    div.innerHTML = `<img src="./images/locationPin_button.png" alt="Get Location" />`;
-    div.onclick = manuallyGetLocation;
-    return div;
-  },
-  onRemove: function (map) {
-    // Nothing to do here
+useEffect(() => {
+  async function createLocationPin() {
+    if (typeof window !== 'undefined') {
+      const { default: L } = await import('leaflet'); // Dynamically import Leaflet
+
+      // Define L.Control.LocationPin here (the code from before)
+      L.Control.LocationPin = L.Control.extend({ 
+        // ... (your L.Control.LocationPin code) ...
+      }); 
+
+      L.control.locationpin = function(opts) {
+        return new L.Control.LocationPin(opts);
+      }
+
+      L.control.locationpin({ position: 'bottomleft' }).addTo(map);
+    }
   }
-});
 
-L.control.locationpin = function (opts) {  // Create a factory function
-  return new L.Control.LocationPin(opts);
-};
-
-
-L.control.locationpin({ position: 'bottomleft' }).addTo(map); 
-}
+  createLocationPin();
+}, []);
 
 
 
