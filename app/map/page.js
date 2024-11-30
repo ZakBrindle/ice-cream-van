@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css';
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
