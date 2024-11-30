@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css';
 let firebaseConfig;
 
 if (typeof window !== 'undefined' && window.location.hostname.includes('localhost')) {
-  //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
+ //firebaseConfig = await import('../firebaseConfig_local.js').then(module => module.default);
 } else {
   firebaseConfig = await import('../firebaseConfig.js').then(module => module.default);
 }
@@ -41,7 +41,7 @@ export default function MapPage() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [map, setMap] = useState(null);
   const [myLocationCircle, setMyLocationCircle] = useState(null);
-
+  
   const [toggleVanIcon, setToggleVanIcon] = useState("./images/van-grey.png");
 
 
@@ -178,7 +178,7 @@ export default function MapPage() {
             window.location.href = "/welcome";
           }
 
-
+          
 
           // Check conditions for setting isLocationOn
           if (userDoc.data().hasVan && userDoc.data().active) {
@@ -187,7 +187,7 @@ export default function MapPage() {
             if (!loggedInBannerShown) {
               setBannerMessage("😎 Location will update automatically if you have the app open");
               setBannerType('timed');
-              setLoggedInBannerShown(true);
+              setLoggedInBannerShown(true); 
             }
           }
         }
@@ -383,7 +383,7 @@ export default function MapPage() {
         console.log("Updated database to " + !isLocationOn);
 
         // 1. Update userData in state
-        setUserData({ ...userData, active: !isLocationOn });
+        setUserData({ ...userData, active: !isLocationOn });        
 
         // 2. Refresh vans from database       
         async function fetchUserData_onTimeFetch() {
@@ -456,7 +456,7 @@ export default function MapPage() {
 
       if (!isLocationOn) {
         setBannerMessage("😎 Location will update automatically if you have the app open");
-
+        
       }
       else {
         setBannerMessage("🍦 Hiding all the ice cream for myself");
@@ -534,72 +534,78 @@ export default function MapPage() {
 
       <div className={styles.app}>
         <div className={styles.topBar}>
+
+
           {user && userData && userData.hasVan && (
             <> {/* Wrap the elements in a fragment */}
-              <div className={styles.toggleSection}> {/* Wrap the image and toggle */}
-                <img
-                  src={toggleVanIcon}
-                  alt="Van Icon"
-                  className={styles.toggleVanIcon}
-                />
-                <div className={styles.toggleContainer}>
-                  <label className={styles.switch}>
-                    <input
-                      type="checkbox"
-                      checked={isLocationOn}
-                      onChange={toggleLocation}
-                    />
-                    <span className={styles.slider}></span>
-                  </label>
-                  <span className={styles.toggleLabel}>
-                    {isLocationOn ? "" : ""}
-                  </span>
-                </div>
-              </>
+
+
+            <div className={styles.toggleSection}>
+              <img
+                src={toggleVanIcon}
+                alt="Van Icon"
+                className={styles.toggleVanIcon}
+              />
+
+              <div className={styles.toggleContainer}>
+                <label className={styles.switch}>
+                  <input
+                    type="checkbox"
+                    checked={isLocationOn}
+                    onChange={toggleLocation}
+                  />
+                  <span className={styles.slider}></span>
+                </label>
+                <span className={styles.toggleLabel}>
+                  {isLocationOn ? "" : ""}
+                </span>
+              </div>
+              </div>
+            </>
           )}
 
-              {user && userData && (
-                <button className={styles.userNameButton} onClick={goToWelcome}>
-                  <div className={styles.loginDetailsContainer}>
-                    <img
-                      src={`/images/profile-pics/${userData.profilePicture}.jpg`}
-                      alt="Profile Picture"
-                      className={styles.profilePictureSmall}
-                    />
-                    <div>
-                      <div className={styles.loggedInAs}>Logged in as:</div>
-                      <div className={styles.userName}>{user.displayName}</div>
-                    </div>
-                  </div>
-                </button>
-              )}
-            </div>
-          <br />
-
-
-
-          <div id="map" className={styles.mapContainer}></div>
-          <div
-            className={styles.createdBy}
-            onClick={() => setShowUserDetails(!showUserDetails)} // Toggle visibility on click
-          >
-            Created by Zak Brindle
-          </div>
-
-          {showUserDetails && user && userData && (
-            <div className={styles.userDetails}>
-              <p>Name: {user.displayName}</p>
-              <p>Email: {user.email}</p>
-              <p>Location: {userData.location.latitude}, {userData.location.longitude}</p>
-              <p>Owns a van?: {userData.hasVan ? "Yes" : "No"}</p>
-              <p>Van Name: {userData.vanName}</p>
-              <p>Live Location: {userData.active ? "Yes" : "No"}</p>
-
-              <p>First Login: {userData ? (userData.firstLogin ? "Yes" : "No") : "Loading..."}</p>
-              <p>UID: {user.uid}</p>
-            </div>
+          {user && userData && (
+            <button className={styles.userNameButton} onClick={goToWelcome}>
+              <div className={styles.loginDetailsContainer}>
+                <img
+                  src={`/images/profile-pics/${userData.profilePicture}.jpg`}
+                  alt="Profile Picture"
+                  className={styles.profilePictureSmall}
+                />
+                <div>
+                  <div className={styles.loggedInAs}>Logged in as:</div>
+                  <div className={styles.userName}>{user.displayName}</div>
+                </div>
+              </div>
+            </button>
           )}
         </div>
-      </>
-      );
+        <br />
+
+       
+
+        <div id="map" className={styles.mapContainer}></div>
+        <div
+          className={styles.createdBy}
+          onClick={() => setShowUserDetails(!showUserDetails)} // Toggle visibility on click
+        >
+          Created by Zak Brindle
+        </div>
+
+        {showUserDetails && user && userData && (
+          <div className={styles.userDetails}>
+            <p>Name: {user.displayName}</p>
+            <p>Email: {user.email}</p>
+            <p>Location: {userData.location.latitude}, {userData.location.longitude}</p>
+            <p>Owns a van?: {userData.hasVan ? "Yes" : "No"}</p>
+            <p>Van Name: {userData.vanName}</p>
+            <p>Live Location: {userData.active ? "Yes" : "No"}</p>
+
+            <p>First Login: {userData ? (userData.firstLogin ? "Yes" : "No") : "Loading..."}</p>
+            <p>UID: {user.uid}</p>
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
