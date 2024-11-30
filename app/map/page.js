@@ -138,10 +138,9 @@ export default function MapPage() {
     // Initialize map after X seconds
     let mapInitialized = false;
     const timer_short = setTimeout(() => {
-      if (!mapInitialized) {
+             if (typeof window !== 'undefined') {
         initMap();
-        mapInitialized = true;
-      }
+        }       
     }, 3000);
 
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
