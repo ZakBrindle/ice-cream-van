@@ -241,8 +241,8 @@ export default function MapPage() {
 
         if (typeof window !== 'undefined') {
         const map = L.map("map").setView(currentLocation || [0, 0], 13);
-        }
         setMap(map);
+      }
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
