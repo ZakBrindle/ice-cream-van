@@ -239,6 +239,29 @@ export default function MapPage() {
       }).addTo(map);
 
 
+       // ADD GET LOCATION PIN
+       if (typeof window !== 'undefined') {
+        L.Control.LocationPin = L.Control.extend({
+          onAdd: function (map) {
+            const div = L.DomUtil.create('div', 'location-pin-button');
+            div.innerHTML = `<img src="./images/locationPin_button.png" alt="Get Location" />`;
+            div.onclick = manuallyGetLocation;
+            return div;
+          },
+          onRemove: function (map) {
+            // Nothing to do here
+          }
+        });
+
+        L.control.locationpin = function (opts) {
+          return new L.Control.LocationPin(opts);
+        };
+
+        L.control.locationpin({ position: 'bottomleft' }).addTo(map);
+      }
+
+
+
       async function fetchUserData() {
         try {
           const usersRef = collection(db, 'users');
@@ -505,28 +528,12 @@ export default function MapPage() {
 
       <div className={styles.app}>
         <div className={styles.topBar}>
-        <img
-            src={toggleVanIcon}
-            alt="Van Icon"
-            className={styles.toggleVanIcon}
+          <img
+            src="./images/settings.png"
+            alt="Settings"
+            className={styles.settingsIcon}
+            onClick={toggleSettings}
           />
-
-          {user && userData && userData.hasVan && (
-            <div className={styles.toggleContainer}>
-              <label className={styles.switch}>
-                <input
-                  type="checkbox"
-                  checked={isLocationOn}
-                  onChange={toggleLocation}
-                />
-                <span className={styles.slider}></span>
-              </label>
-              <span className={styles.toggleLabel}>
-                {isLocationOn ? "" : ""}
-              </span>
-            </div>
-          )}
-
 
           {user && userData && (
             <button className={styles.userNameButton} onClick={goToWelcome}>
@@ -546,13 +553,14 @@ export default function MapPage() {
         </div>
         <br />
 
-        <div id="settingsPanel" style={{ display: "none" }}>
-          <button onClick={getMyLocation} className={styles.settingsButton}>Get Location</button>         
+        <div id="settingsPanel" style={{ display: "none" }}>       
 
-          {/* Removed isOwner check here */}
-          <button onClick={updateMyRoute} className={styles.settingsButton} style={{ backgroundColor: 'darkgrey' }} disabled>My Route</button> 
+          {user && userData && userData.hasVan && ( 
+            <button onClick={toggleLocation} className={styles.settingsButton}>
+              {isLocationOn ? "Turn Off Location" : "Turn On Location"}
+            </button>
+          )}         
 
-          <button onClick={logout} className={styles.settingsButton} style={{ backgroundColor: '#A52A2A' }}>Logout</button>
           <div id="settingsPanelGap" style={{ paddingBottom: "20px" }}>
           </div>
         </div>
