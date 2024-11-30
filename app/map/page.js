@@ -528,14 +528,31 @@ export default function MapPage() {
 
       <div className={styles.app}>
         <div className={styles.topBar}>
-          <img
-            src="./images/settings.png"
-            alt="Settings"
-            className={styles.settingsIcon}
-            onClick={toggleSettings}
+       
+      {user && userData && (
+        <img
+            src={toggleVanIcon}
+            alt="Van Icon"
+            className={styles.toggleVanIcon}
           />
 
-          {user && userData && (
+          {user && userData && userData.hasVan && (
+            <div className={styles.toggleContainer}>
+              <label className={styles.switch}>
+                <input
+                  type="checkbox"
+                  checked={isLocationOn}
+                  onChange={toggleLocation}
+                />
+                <span className={styles.slider}></span>
+              </label>
+              <span className={styles.toggleLabel}>
+                {isLocationOn ? "" : ""}
+              </span>
+            </div>
+          )}
+
+        
             <button className={styles.userNameButton} onClick={goToWelcome}>
               <div className={styles.loginDetailsContainer}>
                 <img
