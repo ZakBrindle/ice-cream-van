@@ -105,31 +105,20 @@ export default function MapPage() {
     try {
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-  
-      // 1. Query the database for a document with matching uid
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("userID", "==", user.uid)); 
-      const querySnapshot = await getDocs(q);
-  
-      if (querySnapshot.docs.length > 0) {
-        // 2. If a document exists, update the location
-        const userDocRef = doc(db, "users", querySnapshot.docs[0].id); 
-  
-        await updateDoc(userDocRef, {
-          location: new GeoPoint(currentLocation[0], currentLocation[1]),
-        });
-  
-        console.log("Location updated in database:", currentLocation);
-      } else {
-        // 3. If no document exists, handle accordingly (e.g., create a new document)
-        console.log("No user document found with uid:", user.uid);
-        // ... you might want to create a new user document here ...
-      }
+      const userDocRef = doc(db, "users", user.uid);
+
+      const userData = {
+        location: new GeoPoint(currentLocation[0], currentLocation[1]), 
+      };
+
+      await updateDoc(userDocRef, userData); 
+      console.log("Location saved to database:" + currentLocation);
     } catch (error) {
-      console.log("Error updating user data: " + error);
+      console.error("Error updating user data:", error);
       console.log("Error saving location (" + currentLocation + ") to database. Please try again.");
     }
   };
+
 
 
   useEffect(() => {
@@ -164,7 +153,7 @@ export default function MapPage() {
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          setUserData(userDoc.data());         
+          setUserData(userDoc.data()); 
 
            // Redirect if firstLogin is true
            if (userDoc.data().firstLogin) {
@@ -179,10 +168,10 @@ export default function MapPage() {
           if (userDoc.data().hasVan && userDoc.data().active) {
             setIsLocationOn(true);
           }
-        }
+        }        
         else
         {
-          window.location.href = "/welcome";
+           window.location.href = "/welcome";
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
