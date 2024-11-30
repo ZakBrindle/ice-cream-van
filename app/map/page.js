@@ -136,19 +136,17 @@ export default function MapPage() {
     }, 3300);
 
     // Initialize map after X seconds
-    let mapInitialized = false;
+   
     const timer_short = setTimeout(() => {
-             if (typeof window !== 'undefined') {
-        initMap();
-        }       
+             
     }, 3000);
-
+    if (typeof window !== 'undefined') {
+      initMap();
+      }       
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       }
-
-
 
       try {
         const userDocRef = doc(db, "users", currentUser.uid);
