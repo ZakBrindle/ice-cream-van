@@ -338,7 +338,7 @@ export default function MapPage() {
       setInterval(fetchUserData, 60 * 1000);
 
       updateLocationOnDatabase();
-      const intervalId = setInterval(updateLocationOnDatabase, 60 * 1000);
+      const intervalId = setInterval(updateLocationOnDatabase, 10 * 1000);
 
       return () => clearInterval(intervalId);
 
